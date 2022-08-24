@@ -1,0 +1,33 @@
+# The overall format is standard TOML format, v0.5.0: https://github.com/toml-lang/toml
+
+#TODO: Fix the now hardcoded stuff to use the processResources outputs
+
+modLoader = "javafml" #mandatory
+loaderVersion = "[40,)" #${loader_version}
+license = "MIT" #${license}
+#issueTrackerURL = "${issue_tracker_url}"
+
+[[mods]]
+modId = "culinarium" #mandatory #${modid}
+version = "${file.jarVersion}" #mandatory #${file.jarVersion}
+displayName = "Culinarium" #mandatory #${modName}
+#updateJSONURL="${updateURL}" #optional
+#displayURL= "${displayURL}" #optional
+#logoFile="culinarium.png" #optional
+#credits="Thanks for this example mod goes to Java" #optional
+authors = "Lanse505" #optional
+description = "Culinarium is a farm to table cooking mod." #${modDesc}
+
+[[dependencies.culinarium]] #optional
+    modId = "forge" #mandatory
+    mandatory = true #mandatory
+    versionRange = "[42.0.1,)" #mandatory #${forge_version}
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.culinarium]]
+    modId = "minecraft"
+    mandatory = true
+    versionRange = "[1.19.2,1.20)"
+    ordering = "NONE"
+    side = "BOTH"

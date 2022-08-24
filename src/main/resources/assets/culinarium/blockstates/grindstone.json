@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "subfacing=north": {
+      "model": "culinarium:block/grindstone_bottom"
+    },
+    "subfacing=south": {
+      "model": "culinarium:block/grindstone_bottom",
+      "y": 180
+    },
+    "subfacing=west": {
+      "model": "culinarium:block/grindstone_bottom",
+      "y": 270
+    },
+    "subfacing=east": {
+      "model": "culinarium:block/grindstone_bottom",
+      "y": 90
+    }
+  }
+}
