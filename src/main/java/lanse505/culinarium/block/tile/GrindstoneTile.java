@@ -53,8 +53,15 @@ public class GrindstoneTile extends ActiveTile<GrindstoneTile> {
   @Override
   public InteractionResult onActivated(Player player, InteractionHand hand, Direction facing, double hitX, double hitY, double hitZ) {
     if (getLevel() != null && !isGrinding) {
+      if (!inventory.getStackInSlot(0).isEmpty() && player.getMainHandItem().isEmpty() && player.isCrouching()) {
+        if (isGrinding) isGrinding = false;
+        player.addItem(inventory.extractItem(0, Integer.MAX_VALUE, false));
+        return InteractionResult.SUCCESS;
+      }
+
       if (!inventory.getStackInSlot(0).isEmpty() && player.getMainHandItem().isEmpty()) {
-        if (activeRecipe != null) isGrinding = true; // If the recipe isn't null and "isGrinding" is false. Set "isGrinding" to true.
+        //if (activeRecipe != null)
+        isGrinding = true; // If the recipe isn't null and "isGrinding" is false. Set "isGrinding" to true.
         if (level != null && level.isClientSide()) spawnGrindParticles(player, hand, facing, hitX, hitY, hitZ); // If it's client-side then spawnGrindParticles.
         return InteractionResult.SUCCESS;
       }
@@ -84,16 +91,20 @@ public class GrindstoneTile extends ActiveTile<GrindstoneTile> {
 
   @Override
   public void serverTick(Level level, BlockPos pos, BlockState state, GrindstoneTile blockEntity) {
-    if (inventory.getStackInSlot(0) != ItemStack.EMPTY && activeRecipe == null) {
-      Optional<SmeltingRecipe> smelting = level.getRecipeManager().getRecipes().stream().filter(recipe -> recipe instanceof SmeltingRecipe)
-              .filter(recipe -> recipe.getIngredients().stream().anyMatch(ingredient -> ingredient.test(inventory.getStackInSlot(0))))
-              .map(recipe -> (SmeltingRecipe) recipe).findFirst();
-      smelting.ifPresent(smeltingRecipe -> activeRecipe = smeltingRecipe);
-    }
-    if (duration++ == 80) duration = 0;
-    if (isGrinding && (activeRecipe == null || inventory.getStackInSlot(0).isEmpty())) isGrinding = false;
+//    if (inventory.getStackInSlot(0) != ItemStack.EMPTY && activeRecipe == null) {
+//      Optional<SmeltingRecipe> smelting = level.getRecipeManager().getRecipes().stream().filter(recipe -> recipe instanceof SmeltingRecipe)
+//              .filter(recipe -> recipe.getIngredients().stream().anyMatch(ingredient -> ingredient.test(inventory.getStackInSlot(0))))
+//              .map(recipe -> (SmeltingRecipe) recipe).findFirst();
+//      smelting.ifPresent(smeltingRecipe -> activeRecipe = smeltingRecipe);
+//    }
+    if (isGrinding && duration < 80) duration++;
+    //if (isGrinding && (activeRecipe == null || inventory.getStackInSlot(0).isEmpty())) isGrinding = false;
+    if (!isGrinding && duration != 0) duration = 0;
     this.markForUpdate();
     this.markComponentDirty();
+    if (duration == GrindstoneTile.DEFAULT_DURATION) {
+      finishGrindingSpin();
+    }
   }
 
   @NotNull
@@ -107,15 +118,22 @@ public class GrindstoneTile extends ActiveTile<GrindstoneTile> {
   }
 
   public void finishGrindingSpin() {
-    if (activeRecipe != null && isGrinding && getLevel() != null) {
+    if (isGrinding && getLevel() != null) {
+      if (activeRecipe != null) {
       inventory.extractItem(0, 1, false); // "Extract" one item.
-      ItemStack output = activeRecipe.getResultItem(); // Get the output from the recipe
-      ItemEntity entity = new ItemEntity(getLevel(), this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), output); // Create ItemEntity
-      getLevel().addFreshEntity(entity); // Spawn ItemEntity
-      isGrinding = false; // Set "isGrinding" to false
-      if (inventory.getStackInSlot(0) == ItemStack.EMPTY) {
-        activeRecipe = null; // Set the activeRecipe to null
-      }
+      //ItemStack output = activeRecipe.getResultItem(); // Get the output from the recipe
+      //ItemEntity entity = new ItemEntity(getLevel(), this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), output); // Create ItemEntity
+      //getLevel().addFreshEntity(entity); // Spawn ItemEntity
+
+      //if (inventory.getStackInSlot(0) == ItemStack.EMPTY) {
+      //  activeRecipe = null; // Set the activeRecipe to null
+      //}
+    }
+    this.isGrinding = false; // Set "isGrinding" to false
+    this.duration = 0;
+    this.markForUpdate();
+    this.markComponentDirty();
+    this.syncObject(this);
     }
   }
 

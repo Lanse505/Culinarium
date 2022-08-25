@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 @Mod(Culinarium.MODID)
 public class Culinarium {
   public static final String MODID = "culinarium";
-  private static final Logger LOGGER = LoggerFactory.getLogger(MODID);
+  public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
   public static final CreativeModeTab CULINARIUM_TAB = new CreativeModeTab(MODID) {
     @Override
     public ItemStack makeIcon() {

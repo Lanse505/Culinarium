@@ -7,6 +7,7 @@ import lanse505.culinarium.Culinarium;
 import lanse505.culinarium.block.tile.GrindstoneTile;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -24,12 +25,10 @@ public class GrindstoneRenderer implements BlockEntityRenderer<GrindstoneTile> {
 
   private final BlockEntityRendererProvider.Context context;
   private final BakedModel model;
-  private final RandomSource random;
 
   public GrindstoneRenderer(BlockEntityRendererProvider.Context context) {
     this.context = context;
     this.model = context.getBlockRenderDispatcher().getBlockModelShaper().getModelManager().getModel(new ResourceLocation(Culinarium.MODID, "block/grindstone_top"));
-    this.random = RandomSource.create();
   }
 
   @Override
@@ -38,7 +37,6 @@ public class GrindstoneRenderer implements BlockEntityRenderer<GrindstoneTile> {
     ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
 
     int i = grindable.isEmpty() ? 187 : Item.getId(grindable.getItem()) + grindable.getDamageValue();
-    random.setSeed(i);
     stack.translate(0.5, 0.325, 0.5);
 
     stack.pushPose();
@@ -46,19 +44,16 @@ public class GrindstoneRenderer implements BlockEntityRenderer<GrindstoneTile> {
     stack.popPose();
 
     stack.pushPose();
-    stack.mulPose(new Quaternion(0, 360f * ((float) grindstone.duration / (float) GrindstoneTile.DEFAULT_DURATION), 0, true));
+    if (grindstone.isGrinding) {
+      stack.mulPose(new Quaternion(0, 360f * ((float) grindstone.duration / (float) GrindstoneTile.DEFAULT_DURATION), 0, true));
+    }
+    stack.translate(-0.5, 0, -0.5);
     context.getBlockRenderDispatcher()
             .getModelRenderer()
             .renderModel(
                     stack.last(), source.getBuffer(RenderType.cutout()), null, model,
                     1f, 1f, 1f,
-                    packedLight, packedOverlay);
+                    LightTexture.FULL_BLOCK, packedOverlay);
     stack.popPose();
-
-    if (grindstone.duration == GrindstoneTile.DEFAULT_DURATION) {
-      grindstone.finishGrindingSpin();
-      grindstone.duration = 0;
-    }
   }
-
 }
