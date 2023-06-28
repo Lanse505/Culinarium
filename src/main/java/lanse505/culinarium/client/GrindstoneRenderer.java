@@ -1,16 +1,15 @@
-package lanse505.culinarium.block.client;
+package lanse505.culinarium.client;
 
 import com.hrznstudio.titanium.block.RotatableBlock;
-import com.hrznstudio.titanium.util.FacingUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import lanse505.culinarium.Culinarium;
+import lanse505.culinarium.block.base.CulinariumRotatableBlock;
 import lanse505.culinarium.block.tile.GrindstoneTile;
 import lanse505.culinarium.register.CulinariumBlockRegistry;
+import lanse505.culinarium.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -21,10 +20,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraftforge.client.model.data.ModelData;
 
 public class GrindstoneRenderer implements BlockEntityRenderer<GrindstoneTile> {
@@ -48,46 +45,33 @@ public class GrindstoneRenderer implements BlockEntityRenderer<GrindstoneTile> {
     stack.pushPose();
     renderer.renderStatic(grindable, ItemTransforms.TransformType.GROUND, LevelRenderer.getLightColor(grindstone.getLevel(), grindstone.getBlockPos()), OverlayTexture.NO_OVERLAY, stack, source, i);
     stack.popPose();
-
+    
     stack.pushPose();
-
-    Direction direction = grindstone.getBlockState().getValue(RotatableBlock.FACING_HORIZONTAL);
+    Direction direction = grindstone.getBlockState().getValue(CulinariumRotatableBlock.FACING_HORIZONTAL);
     switch (direction) {
-      case NORTH -> stack.mulPose(Vector3f.YN.rotationDegrees(90));
-      case EAST -> stack.mulPose(Vector3f.YN.rotationDegrees(180));
-      case SOUTH -> stack.mulPose(Vector3f.YP.rotationDegrees(90));
+      case NORTH -> stack.mulPose(Axis.YN.rotationDegrees(90));
+      case EAST -> stack.mulPose(Axis.YN.rotationDegrees(180));
+      case SOUTH -> stack.mulPose(Axis.YP.rotationDegrees(90));
       case WEST -> {}
     }
 
     if (grindstone.isGrinding) {
-      stack.mulPose(Vector3f.YP.rotationDegrees(360f * ((float) grindstone.duration / (float) GrindstoneTile.DEFAULT_DURATION)));
+      stack.mulPose(Axis.YP.rotationDegrees(360f * ((float) grindstone.duration / (float) GrindstoneTile.DEFAULT_DURATION)));
     }
 
     stack.translate(-0.5, 0, -0.5);
-    context.getBlockRenderDispatcher()
-            .getModelRenderer()
-            .tesselateWithAO(
-                    grindstone.getLevel(),
-                    model,
-                    CulinariumBlockRegistry.GRINDSTONE.get()
-                            .defaultBlockState()
-                            .setValue(RotatableBlock.FACING_HORIZONTAL, grindstone.getBlockState().getValue(RotatableBlock.FACING_HORIZONTAL)),
-                    grindstone.getBlockPos(),
-                    stack,
-                    source.getBuffer(RenderType.cutout()),
-                    false,
-                    RandomSource.create(),
-                    grindstone.getBlockPos().asLong(),
-                    OverlayTexture.NO_OVERLAY,
-                    ModelData.EMPTY,
-                    RenderType.cutout()
-            );
-//    context.getBlockRenderDispatcher()
-//            .getModelRenderer()
-//            .renderModel(
-//                    stack.last(), source.getBuffer(RenderType.cutout()), null, model,
-//                    1f, 1f, 1f,
-//                    packedLight, packedOverlay, ModelData.EMPTY, RenderType.cutout());
+    RenderUtil.renderBEModelWithTesselatedAO(
+            context,
+            grindstone,
+            model,
+            CulinariumBlockRegistry.GRINDSTONE.get()
+              .defaultBlockState()
+              .setValue(CulinariumRotatableBlock.FACING_HORIZONTAL, grindstone.getBlockState().getValue(CulinariumRotatableBlock.FACING_HORIZONTAL)),
+            stack,
+            source.getBuffer(RenderType.cutout()),
+            false,
+            ModelData.EMPTY,
+            RenderType.cutout());
     stack.popPose();
   }
 }

@@ -1,12 +1,15 @@
 package lanse505.culinarium.block;
 
-import lanse505.culinarium.block.base.CulinariumBaseBlock;
+import lanse505.culinarium.block.base.CulinariumBaseTileBlock;
+import lanse505.culinarium.block.base.CulinariumRotatableBlock;
+import lanse505.culinarium.block.base.CulinariumRotatableBlock.RotationType;
 import lanse505.culinarium.block.tile.GrindstoneTile;
 import lanse505.culinarium.register.CulinariumBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -15,11 +18,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class GrindstoneBlock extends CulinariumBaseBlock<GrindstoneTile> {
+public class GrindstoneBlock extends CulinariumRotatableBlock<GrindstoneTile> {
 
   private static final VoxelShape shape = Shapes.box(0.125D, 0.0D, 0.125D, 0.875D, 0.5625D, 0.875D);
 
-  public GrindstoneBlock(Properties properties) {
+  public GrindstoneBlock(BlockBehaviour.Properties properties) {
     super(properties, GrindstoneTile.class);
   }
 

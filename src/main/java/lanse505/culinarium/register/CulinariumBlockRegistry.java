@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 public class CulinariumBlockRegistry {
 
   // Defaults
-  private static final Item.Properties DEFAULT_ITEM_BLOCK_PROPERTIES = new Item.Properties().tab(Culinarium.CULINARIUM_TAB);
+  private static final Item.Properties DEFAULT_ITEM_BLOCK_PROPERTIES = new Item.Properties();
 
 
 
@@ -52,11 +52,6 @@ public class CulinariumBlockRegistry {
   }
 
   private static <T extends ActiveTile<T>> RegistryObject<BlockEntityType<?>> registerBlockEntity(String name, Supplier<BlockEntityType<?>> supplier) {
-    return register(BLOCK_ENTITY_TYPES, name, supplier);
-  }
-
-  private static <T extends ActiveTile<T>> RegistryObject<BlockEntityType<?>> registerBlockEntity(String name, Supplier<BlockEntityType<?>> supplier, Class<T> beClazz) {
-    NBTManager.getInstance().scanTileClassForAnnotations(beClazz);
     return register(BLOCK_ENTITY_TYPES, name, supplier);
   }
 
