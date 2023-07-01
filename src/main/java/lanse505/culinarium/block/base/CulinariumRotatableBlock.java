@@ -17,8 +17,8 @@ public abstract class CulinariumRotatableBlock<T extends CulinariumBaseTile<T>> 
   public static final DirectionProperty FACING_ALL = DirectionProperty.create("facing", Direction.values());
   public static final DirectionProperty FACING_HORIZONTAL = DirectionProperty.create("subfacing", Direction.Plane.HORIZONTAL);
 
-  public CulinariumRotatableBlock(String name, Properties properties, Class<T> tileClass) {
-    super(name, properties, tileClass);
+  public CulinariumRotatableBlock(Properties properties) {
+    super(properties);
   }
 
   @Nonnull

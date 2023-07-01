@@ -1,11 +1,10 @@
 package lanse505.culinarium.register;
 
 import com.google.common.collect.Sets;
-import com.hrznstudio.titanium.block.tile.ActiveTile;
-import com.hrznstudio.titanium.nbthandler.NBTManager;
 import lanse505.culinarium.Culinarium;
-import lanse505.culinarium.block.GrindstoneBlock;
-import lanse505.culinarium.block.tile.GrindstoneTile;
+import lanse505.culinarium.block.base.growable.CulinariumCropBlock;
+import lanse505.culinarium.block.impl.block.MillstoneBlock;
+import lanse505.culinarium.block.impl.tile.MillstoneTile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -26,21 +25,16 @@ public class CulinariumBlockRegistry {
   // Defaults
   private static final Item.Properties DEFAULT_ITEM_BLOCK_PROPERTIES = new Item.Properties();
 
-
-
   // DeferredRegisters
   private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Culinarium.MODID);
   public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Culinarium.MODID);
   private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, Culinarium.MODID);
 
-
-
   // Registration Objects
-  public static final RegistryObject<Block> GRINDSTONE = registerBlock("grindstone", () -> new GrindstoneBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
-  public static final RegistryObject<Item> GRINDSTONE_ITEM = registerBlockItem("grindstone", () -> new BlockItem(GRINDSTONE.get(), DEFAULT_ITEM_BLOCK_PROPERTIES));
-  public static final RegistryObject<BlockEntityType<?>> GRINDSTONE_TILE = registerBlockEntity("grindstone", () -> new BlockEntityType<>(GrindstoneTile::new, Sets.newHashSet(GRINDSTONE.get()), null), GrindstoneTile.class);
-
-
+  public static final RegistryObject<Block> MILLSTONE = registerBlock("millstone", () -> new MillstoneBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion()));
+  public static final RegistryObject<Item> MILLSTONE_ITEM = registerBlockItem("millstone", () -> new BlockItem(MILLSTONE.get(), DEFAULT_ITEM_BLOCK_PROPERTIES));
+  public static final RegistryObject<BlockEntityType<?>> MILLSTONE_TILE = registerBlockEntity("millstone", () -> new BlockEntityType<>(MillstoneTile::new, Sets.newHashSet(MILLSTONE.get()), null));
+  public static final RegistryObject<Block> RYE = registerBlock("rye", () -> new CulinariumCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
 
   // Registration Methods
   private static RegistryObject<Block> registerBlock(String name, Supplier<Block> supplier) {
@@ -51,7 +45,7 @@ public class CulinariumBlockRegistry {
     return register(ITEMS, name, supplier);
   }
 
-  private static <T extends ActiveTile<T>> RegistryObject<BlockEntityType<?>> registerBlockEntity(String name, Supplier<BlockEntityType<?>> supplier) {
+  private static RegistryObject<BlockEntityType<?>> registerBlockEntity(String name, Supplier<BlockEntityType<?>> supplier) {
     return register(BLOCK_ENTITY_TYPES, name, supplier);
   }
 
@@ -67,8 +61,8 @@ public class CulinariumBlockRegistry {
   }
 
   private static void registerAdditionalBlockModels(ModelEvent.RegisterAdditional event) {
-    event.register(new ResourceLocation(Culinarium.MODID, "block/grindstone_top"));
-    event.register(new ResourceLocation(Culinarium.MODID, "block/grindstone_bottom"));
+    event.register(new ResourceLocation(Culinarium.MODID, "block/millstone_top"));
+    event.register(new ResourceLocation(Culinarium.MODID, "block/millstone_bottom"));
   }
 
 }

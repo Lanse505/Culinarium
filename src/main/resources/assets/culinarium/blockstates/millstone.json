@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "subfacing=north": {
+      "model": "culinarium:block/millstone_bottom"
+    },
+    "subfacing=south": {
+      "model": "culinarium:block/millstone_bottom",
+      "y": 180
+    },
+    "subfacing=west": {
+      "model": "culinarium:block/millstone_bottom",
+      "y": 270
+    },
+    "subfacing=east": {
+      "model": "culinarium:block/millstone_bottom",
+      "y": 90
+    }
+  }
+}
