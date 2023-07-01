@@ -55,10 +55,7 @@ public class MillstoneRenderer implements BlockEntityRenderer<MillstoneTile> {
       case WEST -> {}
     }
 
-    if (millstone.isMilling) {
-      stack.mulPose(Axis.YP.rotationDegrees(360f * ((float) millstone.duration / (float) MillstoneTile.DEFAULT_DURATION)));
-    }
-
+    if (millstone.activeRecipe != null) stack.mulPose(Axis.YP.rotationDegrees(360f * ((float) millstone.duration / (float) millstone.activeRecipe.getDuration())));
     stack.translate(-0.5, 0, -0.5);
     RenderUtil.renderBEModelWithTesselatedAO(
             context,

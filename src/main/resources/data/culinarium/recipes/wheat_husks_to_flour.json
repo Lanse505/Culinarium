@@ -1,6 +1,6 @@
 {
   "type": "culinarium:milling",
-  "duration": 80,
+  "duration": 10,
   "id": "culinarium:wheat_husks_to_flour",
   "input": {
     "item": "culinarium:wheat_husks"

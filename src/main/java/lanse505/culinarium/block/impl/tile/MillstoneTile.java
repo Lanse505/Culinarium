@@ -11,6 +11,9 @@ import lanse505.culinarium.util.ItemStackHandlerUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.*;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -25,6 +28,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -33,10 +37,7 @@ public class MillstoneTile extends CulinariumActiveTile<MillstoneTile> {
   private final ItemStackHandler inventory = ItemStackHandlerUtil.createItemHandler(1, (slot, stack) -> stack.is(CulinariumTags.CulinariumItemTags.MILLABLE));
   private final LazyOptional<IItemHandler> inventoryHandler = LazyOptional.of(() -> new AdaptedItemHandler(inventory));
 
-
   public boolean isMilling;
-
-  public static final int DEFAULT_DURATION = 80;
 
   public int duration;
 
@@ -99,6 +100,12 @@ public class MillstoneTile extends CulinariumActiveTile<MillstoneTile> {
     if (tag.contains("duration")) duration = tag.getInt("duration");
   }
 
+  @Nullable
+  @Override
+  public Packet<ClientGamePacketListener> getUpdatePacket() {
+    return ClientboundBlockEntityDataPacket.create(this);
+  }
+
   @Override
   public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
     if (cap == ForgeCapabilities.ITEM_HANDLER) {
@@ -132,7 +139,7 @@ public class MillstoneTile extends CulinariumActiveTile<MillstoneTile> {
       isMilling = false;
       markForUpdate();
     }
-    if (duration == MillstoneTile.DEFAULT_DURATION) {
+    if (activeRecipe != null && duration >= activeRecipe.getDuration()) {
       finishMilling();
     }
   }
@@ -151,20 +158,20 @@ public class MillstoneTile extends CulinariumActiveTile<MillstoneTile> {
     
   }
 
-  //TODO: Reimplement the finishGrindingSpin method
   public void finishMilling() {
-    if (isMilling && getLevel() != null) {
+    if (getLevel() != null) {
       if (activeRecipe != null) {
       inventory.extractItem(0, 1, false); // "Extract" one item.
-      ItemStack output = activeRecipe.getResultItem(getLevel().registryAccess()); // Get the output from the recipe
-      ItemEntity entity = new ItemEntity(getLevel(), this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), output); // Create ItemEntity
-      getLevel().addFreshEntity(entity); // Spawn ItemEntity
+      for (ItemStack output : activeRecipe.getOutput()) {
+        ItemEntity entity = new ItemEntity(getLevel(), this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), output); // Create ItemEntity
+        getLevel().addFreshEntity(entity); // Spawn ItemEntity
+      }
 
       if (inventory.getStackInSlot(0) == ItemStack.EMPTY) {
         activeRecipe = null; // Set the activeRecipe to null
       }
     }
-    this.isMilling = false; // Set "isGrinding" to false
+    this.isMilling = false; // Set "isMilling" to false
     this.duration = 0;
     this.markForUpdate();
     }

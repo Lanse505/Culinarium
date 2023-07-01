@@ -1,6 +1,6 @@
 {
   "type": "culinarium:milling",
-  "duration": 40,
+  "duration": 10,
   "id": "culinarium:wheat_berries_to_flour",
   "input": {
     "item": "culinarium:wheat_berries"
