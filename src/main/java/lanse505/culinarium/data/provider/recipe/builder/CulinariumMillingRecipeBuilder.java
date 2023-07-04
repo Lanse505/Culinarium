@@ -2,8 +2,9 @@ package lanse505.culinarium.data.provider.recipe.builder;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import lanse505.culinarium.register.CulinariumRecipeRegistry;
-import lanse505.culinarium.server.milling.MillingRecipe;
+import lanse505.culinarium.common.register.CulinariumRecipeRegistry;
+import lanse505.culinarium.data.provider.recipe.base.CulinariumBaseRecipeBuilder;
+import lanse505.culinarium.server.recipe.MillingRecipe;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
@@ -17,15 +18,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
 
-public class CulinariumMillingRecipeBuilder implements RecipeBuilder {
+public class CulinariumMillingRecipeBuilder extends CulinariumBaseRecipeBuilder {
 
-  private final ResourceLocation id;
   private Ingredient input;
   private final ItemStack[] output;
-  private int duration = 80;
+  private int duration = 10;
 
   private CulinariumMillingRecipeBuilder(ResourceLocation id, ItemStack[] output) {
-    this.id = id;
+    super(id);
     this.output = output;
   }
 
@@ -44,7 +44,7 @@ public class CulinariumMillingRecipeBuilder implements RecipeBuilder {
   }
 
   public MillingRecipe build() {
-    return new MillingRecipe(id, input, output, duration);
+    return new MillingRecipe(getId(), input, output, duration);
   }
 
   @Override
@@ -68,7 +68,7 @@ public class CulinariumMillingRecipeBuilder implements RecipeBuilder {
     pFinishedRecipeConsumer.accept(new CulinariumMillingRecipeBuilder.Result(pRecipeId, this.input, this.output, this.duration));
   }
 
-  private void ensureValid(ResourceLocation pRecipeId) {
+  protected void ensureValid(ResourceLocation pRecipeId) {
     if (this.input == null) {
       throw new IllegalStateException("No input specified for recipe " + pRecipeId);
     }
@@ -77,14 +77,14 @@ public class CulinariumMillingRecipeBuilder implements RecipeBuilder {
     }
   }
 
-  public static class Result implements FinishedRecipe {
-    private final ResourceLocation id;
+  public static class Result extends CulinariumBaseRecipeBuilder.Result {
+
     private final Ingredient input;
     private final ItemStack[] output;
     private final int duration;
 
     public Result(ResourceLocation id, Ingredient input, ItemStack[] output, int duration) {
-      this.id = id;
+      super(id);
       this.input = input;
       this.output = output;
       this.duration = duration;
@@ -92,7 +92,7 @@ public class CulinariumMillingRecipeBuilder implements RecipeBuilder {
 
     @Override
     public void serializeRecipeData(JsonObject pJson) {
-      pJson.addProperty("id", id.toString());
+      pJson.addProperty("id", getId().toString());
       pJson.add("input", this.input.toJson());
       JsonArray array = new JsonArray();
       for (ItemStack stack : this.output) {
@@ -107,25 +107,8 @@ public class CulinariumMillingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public ResourceLocation getId() {
-      return this.id;
-    }
-
-    @Override
     public RecipeSerializer<?> getType() {
       return CulinariumRecipeRegistry.MILLING.getSerializer();
-    }
-
-    @Nullable
-    @Override
-    public JsonObject serializeAdvancement() {
-      return new JsonObject();
-    }
-
-    @Nullable
-    @Override
-    public ResourceLocation getAdvancementId() {
-      return new ResourceLocation("recipes/root");
     }
   }
 }

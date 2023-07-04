@@ -1,0 +1,12 @@
+{
+  "type": "culinarium:chopping",
+  "chops": 12,
+  "id": "culinarium:chopping/bread_to_slices",
+  "input": {
+    "item": "minecraft:bread"
+  },
+  "output": {
+    "count": 1,
+    "item": "culinarium:slice_of_bread"
+  }
+}

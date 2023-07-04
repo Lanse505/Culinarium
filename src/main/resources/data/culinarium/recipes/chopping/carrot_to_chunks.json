@@ -1,0 +1,12 @@
+{
+  "type": "culinarium:chopping",
+  "chops": 0,
+  "id": "culinarium:chopping/carrot_to_chunks",
+  "input": {
+    "item": "minecraft:carrot"
+  },
+  "output": {
+    "count": 1,
+    "item": "culinarium:carrot_chunks"
+  }
+}

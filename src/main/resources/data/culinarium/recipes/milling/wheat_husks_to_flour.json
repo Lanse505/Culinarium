@@ -1,0 +1,14 @@
+{
+  "type": "culinarium:milling",
+  "duration": 10,
+  "id": "culinarium:milling/wheat_husks_to_flour",
+  "input": {
+    "item": "culinarium:wheat_husks"
+  },
+  "output": [
+    {
+      "count": 1,
+      "item": "culinarium:flour"
+    }
+  ]
+}

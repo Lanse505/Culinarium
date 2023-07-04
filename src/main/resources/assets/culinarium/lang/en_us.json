@@ -1,13 +1,21 @@
 {
   "block.culinarium.millstone": "Millstone",
   "block.culinarium.rye": "Rye",
+  "item.culinarium.bowl_of_water": "Bowl of Water",
+  "item.culinarium.carrot_chunks": "Carrot Chunks",
+  "item.culinarium.dough": "Dough",
   "item.culinarium.flour": "Flour",
   "item.culinarium.grindstone": "Millstone",
+  "item.culinarium.hand_sieve": "Hand Sieve",
+  "item.culinarium.knife": "Chopping Knife",
   "item.culinarium.mixed_wheat_berries": "Mixed Wheat Berries",
   "item.culinarium.rye": "Rye",
   "item.culinarium.rye_seeds": "Rye Seeds",
+  "item.culinarium.slice_of_bread": "Slice o' Bread",
   "item.culinarium.straw": "Straw",
   "item.culinarium.wheat_berries": "Wheat Berries",
   "item.culinarium.wheat_husks": "Wheat Husks",
-  "itemGroup.culinarium": "Culinarium"
+  "itemGroup.culinarium": "Culinarium",
+  "itemGroup.culinarium_crops": "Culinarium: Crops",
+  "itemGroup.culinarium_processing": "Culinarium: Processing"
 }

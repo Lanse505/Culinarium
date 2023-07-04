@@ -1,8 +1,7 @@
 package lanse505.culinarium.data.provider.blockstate;
 
 import lanse505.culinarium.Culinarium;
-import lanse505.culinarium.register.CulinariumBlockRegistry;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.CropBlock;

@@ -1,8 +1,8 @@
 package lanse505.culinarium.data.provider.tag;
 
 import lanse505.culinarium.Culinarium;
-import lanse505.culinarium.register.CulinariumItemRegistry;
-import lanse505.culinarium.util.CulinariumTags.CulinariumItemTags;
+import lanse505.culinarium.common.register.CulinariumItemRegistry;
+import lanse505.culinarium.common.util.CulinariumTags.CulinariumItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
