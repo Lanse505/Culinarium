@@ -109,6 +109,7 @@ public class Culinarium {
     gen.addProvider(event.includeClient(), new CulinariumLootTableProvider(packOutput));
   }
 
+  @SuppressWarnings("unchecked")
   private void registerBlockRenderers(EntityRenderersEvent.RegisterRenderers event) {
     event.registerBlockEntityRenderer((BlockEntityType<? extends MillstoneTile>) CulinariumBlockRegistry.MILLSTONE_TILE.get(), MillstoneRenderer::new);
     event.registerBlockEntityRenderer((BlockEntityType<? extends ChoppingBoardTile>) CulinariumBlockRegistry.CHOPPING_BOARD_TILE.get(), ChoppingBoardRenderer::new);

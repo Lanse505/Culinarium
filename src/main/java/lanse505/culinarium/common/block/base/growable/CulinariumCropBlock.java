@@ -70,19 +70,6 @@ public class CulinariumCropBlock extends CulinariumBushBlock implements Bonemeal
   }
 
   @Override
-  public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-    if (this.canHarvest && pState.getValue(CropBlock.AGE).intValue() == getMaxAge()) {
-      if (!pLevel.isClientSide) {
-        pLevel.playSound(null, pPos, this.soundType.getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
-        dropResources(pState, pLevel, pPos);
-        pLevel.setBlock(pPos, this.getStateForAge((int) Math.floor((double) getMaxAge() / 2)), 2);
-        return InteractionResult.SUCCESS;
-      }
-    }
-    return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
-  }
-
-  @Override
   public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
     return DEFAULT_SHAPE_BY_AGE[this.getAge(pState)];
   }
