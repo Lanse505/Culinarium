@@ -8,9 +8,7 @@ import lanse505.culinarium.data.provider.recipe.builder.CulinariumHarvestRecipeB
 import lanse505.culinarium.data.provider.recipe.builder.CulinariumMillingRecipeBuilder;
 import lanse505.culinarium.common.register.CulinariumItemRegistry;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -22,6 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 
 import java.util.function.Consumer;
 
@@ -35,6 +34,10 @@ public class CulinariumRecipeProvider extends RecipeProvider {
   @Override
   protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
     // Boilerplate
+    SimpleCookingRecipeBuilder.smelting(
+            Ingredient.of(CulinariumItemRegistry.SLICE_OF_BREAD.get()),
+            RecipeCategory.FOOD, CulinariumItemRegistry.TOAST.get(), 0.35F, 200)
+                    .save(consumer, new ResourceLocation(Culinarium.MODID, "smelting/slice_to_toast"));
     SpecialRecipeBuilder
             .special((RecipeSerializer<? extends CraftingRecipe>) CulinariumRecipeRegistry.DOUGH_MAKING.getSerializer())
             .save(consumer, new ResourceLocation(Culinarium.MODID, "dough_making").toString());

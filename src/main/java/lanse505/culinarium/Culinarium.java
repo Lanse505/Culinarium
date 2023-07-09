@@ -73,19 +73,7 @@ public class Culinarium {
   }
 
   private void commonSetup(FMLCommonSetupEvent event) {
-    event.enqueueWork(() -> {
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.FLOUR.get(), 0.15F);
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.CARROT_CHUNKS.get(), 0.22F);
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.RYE_SEEDS.get(), 0.3F);
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.WHEAT_HUSKS.get(), 0.3F);
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.WHEAT_BERRIES.get(), 0.3F);
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.MIXED_WHEAT_BERRIES.get(), 0.3F);
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.SLICE_OF_BREAD.get(), 0.3F);
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.TOAST.get(), 0.3F);
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.DOUGH.get(), 0.5F);
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.STRAW.get(), 0.5F);
-      ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.RYE.get(), 0.65F);
-    });
+    event.enqueueWork(() -> registerCompostValues());
   }
 
   private void gatherData(GatherDataEvent event) {
@@ -137,5 +125,19 @@ public class Culinarium {
       event.accept(CulinariumItemRegistry.RYE_SEEDS.get());
       event.accept(CulinariumItemRegistry.RYE.get());
     }
+  }
+
+  private void registerCompostValues() {
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.FLOUR.get(), 0.15F);
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.CARROT_CHUNKS.get(), 0.22F);
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.RYE_SEEDS.get(), 0.3F);
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.WHEAT_HUSKS.get(), 0.3F);
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.WHEAT_BERRIES.get(), 0.3F);
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.MIXED_WHEAT_BERRIES.get(), 0.3F);
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.SLICE_OF_BREAD.get(), 0.3F);
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.TOAST.get(), 0.3F);
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.DOUGH.get(), 0.5F);
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.STRAW.get(), 0.5F);
+    ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.RYE.get(), 0.65F);
   }
 }
