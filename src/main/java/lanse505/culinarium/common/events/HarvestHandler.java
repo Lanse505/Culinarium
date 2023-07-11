@@ -13,6 +13,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Optional;
+
 @Mod.EventBusSubscriber(modid = Culinarium.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HarvestHandler {
 
@@ -24,19 +26,18 @@ public class HarvestHandler {
   @SubscribeEvent
   public static void onHarvest(PlayerInteractEvent.RightClickBlock event) {
     Level level = event.getLevel();
-    BlockPos pos = event.getHitVec().getBlockPos();
+    BlockPos pos = event.getPos();
     BlockState state = level.getBlockState(pos);
-    boolean hasRecipe = HARVEST_CACHE.getIfPresent(state) != null || level.getRecipeManager().getRecipes().stream()
-            .filter(recipe -> recipe instanceof HarvestRecipe)
-            .anyMatch(recipe -> {
-              boolean check = ((HarvestRecipe) recipe).isValid(state);
-              if (check) HARVEST_CACHE.put(state, (HarvestRecipe) recipe);
-              return check;
-            });
-    boolean handCheck = event.getHand() == InteractionHand.MAIN_HAND &&
-            (event.getItemStack().isEmpty() || event.getItemStack().is(Items.BONE_MEAL));
-    if (hasRecipe && handCheck) {
-      HARVEST_CACHE.getIfPresent(state).harvest(level, state, pos);
+    HarvestRecipe hasRecipe = HARVEST_CACHE.asMap().computeIfAbsent(state,
+         blockState -> level.getRecipeManager().getRecipes().stream()
+                .filter(HarvestRecipe.class::isInstance)
+                .map(HarvestRecipe.class::cast)
+                .filter(recipe -> recipe.isValid(state))
+                .peek(recipe -> HARVEST_CACHE.put(state, recipe))
+                .findFirst().orElse(null));
+    boolean handCheck = event.getHand() == InteractionHand.MAIN_HAND && (event.getItemStack().isEmpty() || event.getItemStack().is(Items.BONE_MEAL));
+    if (hasRecipe != null && handCheck) {
+      hasRecipe.harvest(level, state, pos);
       event.getEntity().swing(event.getHand());
       event.setCanceled(true);
     }

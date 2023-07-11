@@ -7,6 +7,7 @@ import lanse505.culinarium.data.provider.recipe.builder.CulinariumChoppingRecipe
 import lanse505.culinarium.data.provider.recipe.builder.CulinariumHarvestRecipeBuilder;
 import lanse505.culinarium.data.provider.recipe.builder.CulinariumMillingRecipeBuilder;
 import lanse505.culinarium.common.register.CulinariumItemRegistry;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -37,7 +38,8 @@ public class CulinariumRecipeProvider extends RecipeProvider {
     SimpleCookingRecipeBuilder.smelting(
             Ingredient.of(CulinariumItemRegistry.SLICE_OF_BREAD.get()),
             RecipeCategory.FOOD, CulinariumItemRegistry.TOAST.get(), 0.35F, 200)
-                    .save(consumer, new ResourceLocation(Culinarium.MODID, "smelting/slice_to_toast"));
+            .unlockedBy("has_slice_of_toast", has(CulinariumItemRegistry.SLICE_OF_BREAD.get()))
+            .save(consumer, new ResourceLocation(Culinarium.MODID, "smelting/slice_to_toast"));
     SpecialRecipeBuilder
             .special((RecipeSerializer<? extends CraftingRecipe>) CulinariumRecipeRegistry.DOUGH_MAKING.getSerializer())
             .save(consumer, new ResourceLocation(Culinarium.MODID, "dough_making").toString());

@@ -46,7 +46,6 @@ import java.util.concurrent.CompletableFuture;
 //    - Carrot Chunks
 //    - Slice o' Bread
 //    - Toast
-//  - Add "Right-Click" harvest feature
 //  - Add Straw Bedding, Thatch, and Straw Bales
 //  - Brewing?
 //  - Berries & Jam?

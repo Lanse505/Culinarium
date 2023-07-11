@@ -1,5 +1,6 @@
 package lanse505.culinarium.common.block.base;
 
+import lanse505.culinarium.common.block.base.core.ICulinariumCoreBlock;
 import lanse505.culinarium.common.block.impl.tile.MillstoneTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -22,7 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
-public abstract class CulinariumBaseBlock extends Block {
+public abstract class CulinariumBaseBlock extends Block implements ICulinariumCoreBlock {
 
   public CulinariumBaseBlock(Properties pProperties) {
     super(pProperties);
@@ -42,14 +43,6 @@ public abstract class CulinariumBaseBlock extends Block {
     return super.getCollisionShape(state, world, pos, selectionContext);
   }
 
-  public List<VoxelShape> getBoundingBoxes(BlockState state, BlockGetter source, BlockPos pos) {
-    return Collections.emptyList();
-  }
-
-  public boolean hasCustomBoxes(BlockState state, BlockGetter source, BlockPos pos) {
-    return false;
-  }
-
   @Override
   @SuppressWarnings("deprecation")
   public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
@@ -60,15 +53,17 @@ public abstract class CulinariumBaseBlock extends Block {
     super.onRemove(state, worldIn, pos, newState, isMoving);
   }
 
-  public NonNullList<ItemStack> getDynamicDrops(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-    NonNullList<ItemStack> stacks = NonNullList.create();
-    BlockEntity tileentity = worldIn.getBlockEntity(pos);
-    if (tileentity instanceof MillstoneTile millstone) {
-      for (int i = 0; i < millstone.getInventory().getSlots(); i++) {
-        stacks.add(millstone.getInventory().getStackInSlot(i));
-      }
-    }
-    return stacks;
-  }
+// TODO: Reimplement this for the Millstone/ChoppingBlock
+//  @Override
+//  public NonNullList<ItemStack> getDynamicDrops(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+//    NonNullList<ItemStack> stacks = NonNullList.create();
+//    BlockEntity tileentity = worldIn.getBlockEntity(pos);
+//    if (tileentity instanceof MillstoneTile millstone) {
+//      for (int i = 0; i < millstone.getInventory().getSlots(); i++) {
+//        stacks.add(millstone.getInventory().getStackInSlot(i));
+//      }
+//    }
+//    return stacks;
+//  }
 
 }

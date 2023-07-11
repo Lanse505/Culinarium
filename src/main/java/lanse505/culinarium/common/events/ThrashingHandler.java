@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = Culinarium.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ThrashingHandler {
 
+  // TODO: Refactor to take into account, Player, ItemStack, Level for the key
   private static final Cache<ItemStack, Integer> thrashingCache = CacheBuilder.newBuilder()
           .expireAfterAccess(60, java.util.concurrent.TimeUnit.SECONDS)
           .maximumSize(100)
