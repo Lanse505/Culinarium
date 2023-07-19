@@ -11,19 +11,19 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class CulinariumBlockStateProvider extends BlockStateProvider {
 
-  public CulinariumBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-    super(output, Culinarium.MODID, exFileHelper);
-  }
+    public CulinariumBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
+        super(output, Culinarium.MODID, exFileHelper);
+    }
 
-  @Override
-  protected void registerStatesAndModels() {
-    getVariantBuilder(CulinariumBlockRegistry.RYE.get()).forAllStates(state -> ConfiguredModel.builder()
-            .modelFile(models().withExistingParent(
-                    String.format("block/crop/rye_stage%d", state.getValue(CropBlock.AGE)),
-                    new ResourceLocation("minecraft", "block/crop"))
-                    .renderType("cutout")
-                    .texture("crop", modLoc(String.format("block/crop/rye_stage%d", state.getValue(CropBlock.AGE))))
-            ).build());
-  }
+    @Override
+    protected void registerStatesAndModels() {
+        getVariantBuilder(CulinariumBlockRegistry.RYE.get()).forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(models().withExistingParent(
+                                String.format("block/crop/rye_stage%d", state.getValue(CropBlock.AGE)),
+                                new ResourceLocation("minecraft", "block/crop"))
+                        .renderType("cutout")
+                        .texture("crop", modLoc(String.format("block/crop/rye_stage%d", state.getValue(CropBlock.AGE))))
+                ).build());
+    }
 
 }

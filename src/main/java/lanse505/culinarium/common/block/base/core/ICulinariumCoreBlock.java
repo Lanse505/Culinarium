@@ -17,7 +17,9 @@ public interface ICulinariumCoreBlock {
         return Collections.emptyList();
     }
 
-    default boolean hasCustomBoxes(BlockState state, BlockGetter source, BlockPos pos) { return false; }
+    default boolean hasCustomBoxes(BlockState state, BlockGetter source, BlockPos pos) {
+        return false;
+    }
 
     default NonNullList<ItemStack> getDynamicDrops(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
         return NonNullList.create();

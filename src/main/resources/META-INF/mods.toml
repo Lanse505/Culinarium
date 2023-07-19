@@ -19,15 +19,15 @@ authors = "Lanse505" #optional
 description = "Culinarium is a farm to table cooking mod." #${modDesc}
 
 [[dependencies.culinarium]] #optional
-    modId = "forge" #mandatory
-    mandatory = true #mandatory
-    versionRange = "[42.0.1,)" #mandatory #${forge_version}
-    ordering = "NONE"
-    side = "BOTH"
+modId = "forge" #mandatory
+mandatory = true #mandatory
+versionRange = "[42.0.1,)" #mandatory #${forge_version}
+ordering = "NONE"
+side = "BOTH"
 
 [[dependencies.culinarium]]
-    modId = "minecraft"
-    mandatory = true
-    versionRange = "[1.20,)"
-    ordering = "NONE"
-    side = "BOTH"
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20,)"
+ordering = "NONE"
+side = "BOTH"

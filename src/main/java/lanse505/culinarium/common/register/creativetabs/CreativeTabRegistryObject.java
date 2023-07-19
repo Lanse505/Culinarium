@@ -6,8 +6,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class CreativeTabRegistryObject extends WrappedRegistryObject<CreativeModeTab> {
 
-  public CreativeTabRegistryObject(RegistryObject<CreativeModeTab> registryObject) {
-    super(registryObject);
-  }
+    public CreativeTabRegistryObject(RegistryObject<CreativeModeTab> registryObject) {
+        super(registryObject);
+    }
 
 }

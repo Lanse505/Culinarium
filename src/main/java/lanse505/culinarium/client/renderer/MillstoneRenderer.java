@@ -25,50 +25,52 @@ import net.minecraftforge.client.model.data.ModelData;
 
 public class MillstoneRenderer implements BlockEntityRenderer<MillstoneTile> {
 
-  private final BlockEntityRendererProvider.Context context;
-  private final BakedModel model;
+    private final BlockEntityRendererProvider.Context context;
+    private final BakedModel model;
 
-  public MillstoneRenderer(BlockEntityRendererProvider.Context context) {
-    this.context = context;
-    this.model = context.getBlockRenderDispatcher().getBlockModelShaper().getModelManager().getModel(new ResourceLocation(Culinarium.MODID, "block/millstone_top"));
-  }
-
-
-  @Override
-  public void render(MillstoneTile millstone, float partial, PoseStack stack, MultiBufferSource source, int packedLight, int packedOverlay) {
-    ItemStack millable = millstone.getInventory().getStackInSlot(0);
-    ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
-
-    int i = millable.isEmpty() ? 187 : Item.getId(millable.getItem()) + millable.getDamageValue();
-    stack.translate(0.5, 0.325, 0.5);
-
-    stack.pushPose();
-    renderer.renderStatic(millable, ItemDisplayContext.GROUND, LevelRenderer.getLightColor(millstone.getLevel(), millstone.getBlockPos()), OverlayTexture.NO_OVERLAY, stack, source, millstone.getLevel(), i);
-    stack.popPose();
-    
-    stack.pushPose();
-    Direction direction = millstone.getBlockState().getValue(CulinariumRotatableBlock.FACING_HORIZONTAL);
-    switch (direction) {
-      case NORTH -> stack.mulPose(Axis.YN.rotationDegrees(90));
-      case EAST -> stack.mulPose(Axis.YN.rotationDegrees(180));
-      case SOUTH -> stack.mulPose(Axis.YP.rotationDegrees(90));
-      case WEST -> {}
+    public MillstoneRenderer(BlockEntityRendererProvider.Context context) {
+        this.context = context;
+        this.model = context.getBlockRenderDispatcher().getBlockModelShaper().getModelManager().getModel(new ResourceLocation(Culinarium.MODID, "block/millstone_top"));
     }
 
-    if (millstone.activeRecipe != null) stack.mulPose(Axis.YP.rotationDegrees(360f * ((float) millstone.duration / (float) millstone.activeRecipe.getDuration())));
-    stack.translate(-0.5, 0, -0.5);
-    RenderUtil.renderBEModelWithTesselatedAO(
-            context,
-            millstone,
-            model,
-            CulinariumBlockRegistry.MILLSTONE.get()
-              .defaultBlockState()
-              .setValue(CulinariumRotatableBlock.FACING_HORIZONTAL, millstone.getBlockState().getValue(CulinariumRotatableBlock.FACING_HORIZONTAL)),
-            stack,
-            source.getBuffer(RenderType.cutout()),
-            false,
-            ModelData.EMPTY,
-            RenderType.cutout());
-    stack.popPose();
-  }
+
+    @Override
+    public void render(MillstoneTile millstone, float partial, PoseStack stack, MultiBufferSource source, int packedLight, int packedOverlay) {
+        ItemStack millable = millstone.getInventory().getStackInSlot(0);
+        ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
+
+        int i = millable.isEmpty() ? 187 : Item.getId(millable.getItem()) + millable.getDamageValue();
+        stack.translate(0.5, 0.325, 0.5);
+
+        stack.pushPose();
+        renderer.renderStatic(millable, ItemDisplayContext.GROUND, LevelRenderer.getLightColor(millstone.getLevel(), millstone.getBlockPos()), OverlayTexture.NO_OVERLAY, stack, source, millstone.getLevel(), i);
+        stack.popPose();
+
+        stack.pushPose();
+        Direction direction = millstone.getBlockState().getValue(CulinariumRotatableBlock.FACING_HORIZONTAL);
+        switch (direction) {
+            case NORTH -> stack.mulPose(Axis.YN.rotationDegrees(90));
+            case EAST -> stack.mulPose(Axis.YN.rotationDegrees(180));
+            case SOUTH -> stack.mulPose(Axis.YP.rotationDegrees(90));
+            case WEST -> {
+            }
+        }
+
+        if (millstone.activeRecipe != null)
+            stack.mulPose(Axis.YP.rotationDegrees(360f * ((float) millstone.duration / (float) millstone.activeRecipe.getDuration())));
+        stack.translate(-0.5, 0, -0.5);
+        RenderUtil.renderBEModelWithTesselatedAO(
+                context,
+                millstone,
+                model,
+                CulinariumBlockRegistry.MILLSTONE.get()
+                        .defaultBlockState()
+                        .setValue(CulinariumRotatableBlock.FACING_HORIZONTAL, millstone.getBlockState().getValue(CulinariumRotatableBlock.FACING_HORIZONTAL)),
+                stack,
+                source.getBuffer(RenderType.cutout()),
+                false,
+                ModelData.EMPTY,
+                RenderType.cutout());
+        stack.popPose();
+    }
 }

@@ -11,20 +11,20 @@ import java.util.Locale;
 
 public class CulinariumTags {
 
-  public static class CulinariumBlockTags {
-    public static TagKey<Block> HARD_SURFACE = getBlockTag("hard_surface");
-  }
+    private static TagKey<Item> getItemTag(String name) {
+        return TagKey.create(Registries.ITEM, new ResourceLocation(Culinarium.MODID, name.toLowerCase(Locale.ROOT)));
+    }
 
-  public static class CulinariumItemTags {
-    public static TagKey<Item> MILLABLE = getItemTag("millable");
-  }
+    private static TagKey<Block> getBlockTag(String name) {
+        return TagKey.create(Registries.BLOCK, new ResourceLocation(Culinarium.MODID, name.toLowerCase(Locale.ROOT)));
+    }
 
-  private static TagKey<Item> getItemTag(String name) {
-    return TagKey.create(Registries.ITEM, new ResourceLocation(Culinarium.MODID, name.toLowerCase(Locale.ROOT)));
-  }
+    public static class CulinariumBlockTags {
+        public static TagKey<Block> HARD_SURFACE = getBlockTag("hard_surface");
+    }
 
-  private static TagKey<Block> getBlockTag(String name) {
-    return TagKey.create(Registries.BLOCK, new ResourceLocation(Culinarium.MODID, name.toLowerCase(Locale.ROOT)));
-  }
+    public static class CulinariumItemTags {
+        public static TagKey<Item> MILLABLE = getItemTag("millable");
+    }
 
 }

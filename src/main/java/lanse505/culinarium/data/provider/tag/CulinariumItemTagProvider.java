@@ -13,19 +13,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 public class CulinariumItemTagProvider extends ItemTagsProvider {
-  public CulinariumItemTagProvider(
-          PackOutput output,
-          CompletableFuture<HolderLookup.Provider> holderProvider,
-          CompletableFuture<TagLookup<Block>> blockLookup,
-          @Nullable ExistingFileHelper existingFileHelper)
-  {
-    super(output, holderProvider, blockLookup, Culinarium.MODID, existingFileHelper);
-  }
+    public CulinariumItemTagProvider(
+            PackOutput output,
+            CompletableFuture<HolderLookup.Provider> holderProvider,
+            CompletableFuture<TagLookup<Block>> blockLookup,
+            @Nullable ExistingFileHelper existingFileHelper) {
+        super(output, holderProvider, blockLookup, Culinarium.MODID, existingFileHelper);
+    }
 
-  @Override
-  protected void addTags(HolderLookup.Provider pProvider) {
-    tag(CulinariumItemTags.MILLABLE)
-            .add(CulinariumItemRegistry.WHEAT_BERRIES.get())
-            .add(CulinariumItemRegistry.WHEAT_HUSKS.get());
-  }
+    @Override
+    protected void addTags(HolderLookup.Provider pProvider) {
+        tag(CulinariumItemTags.MILLABLE)
+                .add(CulinariumItemRegistry.WHEAT_BERRIES.get())
+                .add(CulinariumItemRegistry.WHEAT_HUSKS.get());
+    }
 }
