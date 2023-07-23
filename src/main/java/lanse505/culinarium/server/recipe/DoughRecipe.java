@@ -83,7 +83,7 @@ public class DoughRecipe extends CustomRecipe {
 
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return pWidth >= 3 && pHeight >= 3;
+        return pWidth >= 2 && pHeight >= 2;
     }
 
     @Override

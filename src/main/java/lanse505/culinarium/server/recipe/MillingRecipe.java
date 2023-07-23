@@ -85,12 +85,12 @@ public class MillingRecipe implements Recipe<Container> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return CulinariumRecipeRegistry.MILLING.getSerializer();
+        return CulinariumRecipeRegistry.MILLING.serializer().get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return CulinariumRecipeRegistry.MILLING.getType();
+        return CulinariumRecipeRegistry.MILLING.type().get();
     }
 
     public static class MillingSerializer implements RecipeSerializer<MillingRecipe> {

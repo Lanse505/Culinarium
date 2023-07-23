@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "sealed=true": {
+      "model": "culinarium:block/barrel/soaking_barrel_sealed"
+    },
+    "sealed=false": {
+      "model": "culinarium:block/barrel/soaking_barrel"
+    }
+  }
+}

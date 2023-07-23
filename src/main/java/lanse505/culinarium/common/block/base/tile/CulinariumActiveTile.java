@@ -20,7 +20,7 @@ public abstract class CulinariumActiveTile<T extends CulinariumActiveTile<T>> ex
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return CulinariumBlockRegistry.MILLSTONE_TILE.get().create(pPos, pState);
+        return CulinariumBlockRegistry.MILLSTONE.getType().create(pPos, pState);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

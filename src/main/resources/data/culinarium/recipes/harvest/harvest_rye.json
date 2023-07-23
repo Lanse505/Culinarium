@@ -1,0 +1,16 @@
+{
+  "type": "culinarium:harvest",
+  "isFuzzy": true,
+  "result": {
+    "block": "culinarium:rye",
+    "properties": {
+      "age": "3"
+    }
+  },
+  "target": {
+    "block": "culinarium:rye",
+    "properties": {
+      "age": "7"
+    }
+  }
+}

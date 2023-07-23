@@ -1,0 +1,16 @@
+{
+  "type": "culinarium:harvest",
+  "isFuzzy": true,
+  "result": {
+    "block": "minecraft:wheat",
+    "properties": {
+      "age": "3"
+    }
+  },
+  "target": {
+    "block": "minecraft:wheat",
+    "properties": {
+      "age": "7"
+    }
+  }
+}

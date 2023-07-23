@@ -1,11 +1,13 @@
 package lanse505.culinarium;
 
+import lanse505.culinarium.client.gui.BrewingBarrelScreen;
 import lanse505.culinarium.client.renderer.ChoppingBoardRenderer;
 import lanse505.culinarium.client.renderer.MillstoneRenderer;
 import lanse505.culinarium.common.block.impl.tile.ChoppingBoardTile;
 import lanse505.culinarium.common.block.impl.tile.MillstoneTile;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import lanse505.culinarium.common.register.CulinariumItemRegistry;
+import lanse505.culinarium.common.register.CulinariumMenuTypeRegistry;
 import lanse505.culinarium.common.register.CulinariumRecipeRegistry;
 import lanse505.culinarium.common.register.creativetabs.CulinariumCreativeTabs;
 import lanse505.culinarium.data.provider.blockstate.CulinariumBlockStateProvider;
@@ -15,6 +17,7 @@ import lanse505.culinarium.data.provider.model.CulinariumItemModelProvider;
 import lanse505.culinarium.data.provider.recipe.CulinariumRecipeProvider;
 import lanse505.culinarium.data.provider.tag.CulinariumBlockTagProvider;
 import lanse505.culinarium.data.provider.tag.CulinariumItemTagProvider;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -25,6 +28,7 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -59,6 +63,7 @@ public class Culinarium {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         // Register listeners
+        modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::registerBlockRenderers);
         modEventBus.addListener(this::registerCreativeTabs);
@@ -67,8 +72,15 @@ public class Culinarium {
         // Deferred Register
         CulinariumBlockRegistry.register(modEventBus);
         CulinariumItemRegistry.register(modEventBus);
-        CulinariumCreativeTabs.CREATIVE_TABS.register(modEventBus);
+        CulinariumCreativeTabs.register(modEventBus);
         CulinariumRecipeRegistry.register(modEventBus);
+        CulinariumMenuTypeRegistry.register(modEventBus);
+    }
+
+    private void clientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            MenuScreens.register(CulinariumMenuTypeRegistry.BREWING_BARREL_MENU.get(), BrewingBarrelScreen::new);
+        });
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -98,16 +110,19 @@ public class Culinarium {
 
     @SuppressWarnings("unchecked")
     private void registerBlockRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer((BlockEntityType<? extends MillstoneTile>) CulinariumBlockRegistry.MILLSTONE_TILE.get(), MillstoneRenderer::new);
-        event.registerBlockEntityRenderer((BlockEntityType<? extends ChoppingBoardTile>) CulinariumBlockRegistry.CHOPPING_BOARD_TILE.get(), ChoppingBoardRenderer::new);
+        event.registerBlockEntityRenderer(CulinariumBlockRegistry.MILLSTONE.getType(), MillstoneRenderer::new);
+        event.registerBlockEntityRenderer(CulinariumBlockRegistry.CHOPPING_BOARD.getType(), ChoppingBoardRenderer::new);
     }
 
     private void registerCreativeTabs(BuildCreativeModeTabContentsEvent event) {
         if (event.getTab() == CulinariumCreativeTabs.MAIN.get()) {
-            event.accept(CulinariumBlockRegistry.MILLSTONE_ITEM.get());
-            event.accept(CulinariumBlockRegistry.CHOPPING_BOARD_ITEM.get());
+            event.accept(CulinariumBlockRegistry.MILLSTONE.getItem());
+            event.accept(CulinariumBlockRegistry.CHOPPING_BOARD.getItem());
             event.accept(CulinariumItemRegistry.HAND_SIEVE.get());
             event.accept(CulinariumItemRegistry.KNIFE.get());
+            event.accept(CulinariumBlockRegistry.BREWING_BARREL.getItem());
+            //event.accept(CulinariumBlockRegistry.SOAKING_BARREL_ITEM.get());
+            //event.accept(CulinariumBlockRegistry.STORAGE_BARREL_ITEM.get());
         }
         if (event.getTab() == CulinariumCreativeTabs.PROCESSING.get()) {
             event.accept(CulinariumItemRegistry.STRAW.get());
@@ -119,6 +134,8 @@ public class Culinarium {
             event.accept(CulinariumItemRegistry.SLICE_OF_BREAD.get());
             event.accept(CulinariumItemRegistry.TOAST.get());
             event.accept(CulinariumItemRegistry.CARROT_CHUNKS.get());
+            event.accept(CulinariumBlockRegistry.STRAW_BALE.get().asItem());
+            event.accept(CulinariumItemRegistry.BOWL_OF_WATER.get());
         }
         if (event.getTab() == CulinariumCreativeTabs.CROPS.get()) {
             event.accept(CulinariumItemRegistry.RYE_SEEDS.get());

@@ -52,7 +52,7 @@ public class MillstoneTile extends CulinariumActiveTile<MillstoneTile> {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public MillstoneTile(BlockPos pos, BlockState state) {
-        super((CulinariumBaseTileBlock) CulinariumBlockRegistry.MILLSTONE.get(), CulinariumBlockRegistry.MILLSTONE_TILE.get(), pos, state);
+        super(CulinariumBlockRegistry.MILLSTONE.getBlock(), CulinariumBlockRegistry.MILLSTONE.getType(), pos, state);
     }
 
     private boolean hasValidRecipe(int slot, @Nonnull ItemStack stack) {

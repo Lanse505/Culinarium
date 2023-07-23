@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -33,6 +34,17 @@ public abstract class CulinariumBarrelBase<T extends CulinariumBaseTile<T>> exte
 
     public CulinariumBarrelBase(Properties properties) {
         super(properties);
+    }
+
+    @NotNull
+    @Override
+    public RotationType getRotationType() {
+        return RotationType.SIX_WAY;
+    }
+
+    @Override
+    public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+        return true;
     }
 
     @Nullable

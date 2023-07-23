@@ -63,7 +63,7 @@ public class MillstoneRenderer implements BlockEntityRenderer<MillstoneTile> {
                 context,
                 millstone,
                 model,
-                CulinariumBlockRegistry.MILLSTONE.get()
+                CulinariumBlockRegistry.MILLSTONE.getBlock()
                         .defaultBlockState()
                         .setValue(CulinariumRotatableBlock.FACING_HORIZONTAL, millstone.getBlockState().getValue(CulinariumRotatableBlock.FACING_HORIZONTAL)),
                 stack,

@@ -22,13 +22,18 @@ public class CulinariumProviderEnUS extends BaseCulinariumLangRegistry {
 
     @Override
     public void addBlockTranslations() {
-        add(CulinariumBlockRegistry.MILLSTONE.get(), "Millstone");
+        add(CulinariumBlockRegistry.MILLSTONE.getBlock(), "Millstone");
+        add(CulinariumBlockRegistry.CHOPPING_BOARD.getBlock(), "Chopping Board");
         add(CulinariumBlockRegistry.RYE.get(), "Rye");
+        add(CulinariumBlockRegistry.STRAW_BALE.get(), "Straw Bale");
+        add(CulinariumBlockRegistry.BREWING_BARREL.getBlock(), "Brewing Barrel");
+        //add(CulinariumBlockRegistry.SOAKING_BARREL.get(), "Soaking Barrel");
+        //add(CulinariumBlockRegistry.STORAGE_BARREL.get(), "Storage Barrel");
     }
 
     @Override
     public void addItemTranslations() {
-        add("item.culinarium.grindstone", "Millstone");
+        // Items
         add(CulinariumItemRegistry.RYE.get(), "Rye");
         add(CulinariumItemRegistry.RYE_SEEDS.get(), "Rye Seeds");
         add(CulinariumItemRegistry.MIXED_WHEAT_BERRIES.get(), "Mixed Wheat Berries");
@@ -41,6 +46,7 @@ public class CulinariumProviderEnUS extends BaseCulinariumLangRegistry {
         add(CulinariumItemRegistry.DOUGH.get(), "Dough");
         add(CulinariumItemRegistry.KNIFE.get(), "Chopping Knife");
         add(CulinariumItemRegistry.SLICE_OF_BREAD.get(), "Slice o' Bread");
+        add(CulinariumItemRegistry.TOAST.get(), "Toast");
         add(CulinariumItemRegistry.CARROT_CHUNKS.get(), "Carrot Chunks");
     }
 

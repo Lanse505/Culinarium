@@ -32,7 +32,7 @@ public class CulinariumRecipeRegistry {
     public static <T extends Recipe<?>> RecipeHolder<T> registerRecipe(String typeName, RecipeSerializer<T> recipeSerializer) {
         final RegistryObject<RecipeType<T>> type = RECIPE_TYPES.register(typeName, () -> RecipeType.simple(new ResourceLocation(Culinarium.MODID, typeName)));
         final RegistryObject<RecipeSerializer<T>> serializer = RECIPE_SERIALIZERS.register(typeName, () -> recipeSerializer);
-        return new RecipeHolder<T>(type, serializer);
+        return new RecipeHolder<>(type, serializer);
     }
 
     public static void register(IEventBus bus) {
@@ -40,21 +40,12 @@ public class CulinariumRecipeRegistry {
         RECIPE_SERIALIZERS.register(bus);
     }
 
-    public static class RecipeHolder<T extends Recipe<?>> {
-
-        private final RegistryObject<RecipeType<T>> type;
-        private final RegistryObject<RecipeSerializer<T>> serializer;
-
-        private RecipeHolder(RegistryObject<RecipeType<T>> type, RegistryObject<RecipeSerializer<T>> serializer) {
-            this.type = type;
-            this.serializer = serializer;
-        }
-
-        public RecipeType<?> getType() {
+    public record RecipeHolder<T extends Recipe<?>> (RegistryObject<RecipeType<T>> type, RegistryObject<RecipeSerializer<T>> serializer) {
+        public RecipeType<T> getType() {
             return type.get();
         }
 
-        public RecipeSerializer<?> getSerializer() {
+        public RecipeSerializer<T> getSerializer() {
             return serializer.get();
         }
     }

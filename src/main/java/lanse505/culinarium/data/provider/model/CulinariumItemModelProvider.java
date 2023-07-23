@@ -29,5 +29,6 @@ public class CulinariumItemModelProvider extends ItemModelProvider {
         singleTexture("slice_of_bread", mcLoc("minecraft:item/generated"), "layer0", new ResourceLocation("minecraft", "item/bread"));
         singleTexture("toast", mcLoc("minecraft:item/generated"), "layer0", new ResourceLocation("minecraft", "item/bread"));
         singleTexture("carrot_chunks", mcLoc("minecraft:item/generated"), "layer0", new ResourceLocation("minecraft", "item/carrot"));
+
     }
 }

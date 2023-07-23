@@ -50,12 +50,12 @@ public class HarvestRecipe extends CulinariumBaseRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return CulinariumRecipeRegistry.HARVEST.getSerializer();
+        return CulinariumRecipeRegistry.HARVEST.serializer().get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return CulinariumRecipeRegistry.HARVEST.getType();
+        return CulinariumRecipeRegistry.HARVEST.type().get();
     }
 
     public static class HarvestSerializer implements RecipeSerializer<HarvestRecipe> {

@@ -26,19 +26,22 @@ public class BrewingRecipe extends CulinariumBaseRecipe {
     private final FluidStack brewable;
     private final List<RecipeIngredient> recipeIngredients;
     private final FluidStack brewed;
+    private final int ticks;
 
     public BrewingRecipe(ResourceLocation id, FluidStack brewable, FluidStack brewed, RecipeIngredient... recipeIngredients) {
         super(id);
         this.brewable = brewable;
         this.recipeIngredients = Arrays.asList(recipeIngredients);
         this.brewed = brewed;
+        this.ticks = 100;
     }
 
-    public BrewingRecipe(ResourceLocation id, FluidStack brewable, List<RecipeIngredient> recipeIngredients, FluidStack brewed) {
+    public BrewingRecipe(ResourceLocation id, FluidStack brewable, List<RecipeIngredient> recipeIngredients, FluidStack brewed, int ticks) {
         super(id);
         this.brewable = brewable;
         this.recipeIngredients = recipeIngredients;
         this.brewed = brewed;
+        this.ticks = ticks;
     }
 
     public static RecipeIngredient getRecipeIngredientFromJson(JsonObject json) {
@@ -97,6 +100,10 @@ public class BrewingRecipe extends CulinariumBaseRecipe {
         return brewed;
     }
 
+    public int getTicks() {
+        return ticks;
+    }
+
     public record RecipeIngredient(Ingredient ingredient, int count) {
         public boolean test(ItemStack stack) {
             return ingredient.test(stack) && stack.getCount() >= count;
@@ -122,7 +129,8 @@ public class BrewingRecipe extends CulinariumBaseRecipe {
                 ri.add(getRecipeIngredientFromJson(riJson));
             }
             final FluidStack brewed = FluidStack.CODEC.parse(JsonOps.INSTANCE, serializedRecipe.get("brewed").getAsJsonObject()).get().orThrow();
-            return new BrewingRecipe(recipeId, brewable, ri, brewed);
+            final int ticks = serializedRecipe.get("ticks").getAsInt();
+            return new BrewingRecipe(recipeId, brewable, ri, brewed, ticks);
         }
 
         @Override
@@ -133,7 +141,8 @@ public class BrewingRecipe extends CulinariumBaseRecipe {
                 ingredients.add(getRecipeIngredientFromNetwork(buffer));
             }
             final FluidStack brewed = buffer.readFluidStack();
-            return new BrewingRecipe(recipeId, brewable, ingredients, brewed);
+            final int ticks = buffer.readInt();
+            return new BrewingRecipe(recipeId, brewable, ingredients, brewed, ticks);
         }
 
         @Override
@@ -146,6 +155,7 @@ public class BrewingRecipe extends CulinariumBaseRecipe {
                 buffer.writeInt(ri.count);
             }
             buffer.writeFluidStack(recipe.brewed);
+            buffer.writeInt(recipe.ticks);
         }
     }
 }

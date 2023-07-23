@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "l": {
+      "item": "minecraft:stick"
+    },
+    "s": {
+      "tag": "forge:string"
+    }
+  },
+  "pattern": [
+    "lsl",
+    "sss",
+    "lsl"
+  ],
+  "result": {
+    "item": "culinarium:hand_sieve"
+  },
+  "show_notification": true
+}

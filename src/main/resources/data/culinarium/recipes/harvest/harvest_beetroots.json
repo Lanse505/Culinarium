@@ -1,0 +1,16 @@
+{
+  "type": "culinarium:harvest",
+  "isFuzzy": true,
+  "result": {
+    "block": "minecraft:beetroots",
+    "properties": {
+      "age": "1"
+    }
+  },
+  "target": {
+    "block": "minecraft:beetroots",
+    "properties": {
+      "age": "3"
+    }
+  }
+}

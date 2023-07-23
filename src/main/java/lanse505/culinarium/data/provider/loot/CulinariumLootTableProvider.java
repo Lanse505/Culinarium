@@ -49,7 +49,7 @@ public class CulinariumLootTableProvider extends LootTableProvider {
         protected void generate() {
             LootItemCondition.Builder ryeCondition = LootItemBlockStatePropertyCondition.hasBlockStateProperties(CulinariumBlockRegistry.RYE.get())
                     .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CropBlock.AGE, 7));
-            this.dropSelf(CulinariumBlockRegistry.MILLSTONE.get());
+            this.dropSelf(CulinariumBlockRegistry.MILLSTONE.getBlock());
             this.add(CulinariumBlockRegistry.RYE.get(),
                     this.createCropDrops(
                             CulinariumBlockRegistry.RYE.get(),

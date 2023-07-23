@@ -40,8 +40,7 @@ public class ChoppingBoardTile extends CulinariumActiveTile<ChoppingBoardTile> {
 
     @SuppressWarnings("unchecked")
     public ChoppingBoardTile(BlockPos pPos, BlockState pBlockState) {
-        super((CulinariumBaseTileBlock<ChoppingBoardTile>) CulinariumBlockRegistry.CHOPPING_BOARD.get(),
-                CulinariumBlockRegistry.CHOPPING_BOARD_TILE.get(), pPos, pBlockState);
+        super(CulinariumBlockRegistry.CHOPPING_BOARD.getBlock(), CulinariumBlockRegistry.CHOPPING_BOARD.getType(), pPos, pBlockState);
     }
 
     public boolean isValid(int slot, @Nonnull ItemStack stack) {

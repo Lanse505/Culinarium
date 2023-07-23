@@ -50,12 +50,12 @@ public class ChoppingRecipe extends CulinariumBaseRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return CulinariumRecipeRegistry.CHOPPING.getSerializer();
+        return CulinariumRecipeRegistry.CHOPPING.serializer().get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return CulinariumRecipeRegistry.CHOPPING.getType();
+        return CulinariumRecipeRegistry.CHOPPING.type().get();
     }
 
     public static class ChoppingSerializer implements RecipeSerializer<ChoppingRecipe> {

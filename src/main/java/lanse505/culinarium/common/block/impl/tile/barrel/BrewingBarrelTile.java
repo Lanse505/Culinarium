@@ -1,6 +1,5 @@
 package lanse505.culinarium.common.block.impl.tile.barrel;
 
-import lanse505.culinarium.common.block.base.CulinariumBaseTileBlock;
 import lanse505.culinarium.common.block.base.tile.CulinariumBarrelTileBase;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import lanse505.culinarium.common.util.FluidTankBuilder;
@@ -34,8 +33,8 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
     private int progress;
 
     public BrewingBarrelTile(BlockPos pPos, BlockState pBlockState) {
-        super((CulinariumBaseTileBlock<BrewingBarrelTile>) CulinariumBlockRegistry.BREWING_BARREL.get(),
-                CulinariumBlockRegistry.BREWING_BARREL_TILE.get(), pPos, pBlockState);
+        super(CulinariumBlockRegistry.BREWING_BARREL.getBlock(),
+                CulinariumBlockRegistry.BREWING_BARREL.getType(), pPos, pBlockState);
         this.brewable = FluidTankBuilder.builder(8000).build();
         this.brewableCap = LazyOptional.of(() -> brewable);
         this.storage = ItemStackHandlerBuilder.builder().slots(4).maxSlotSize((slot, stack) -> 64).build();
@@ -89,6 +88,14 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
 
     public FluidTank getBrewed() {
         return brewed;
+    }
+
+    public BrewingRecipe getRecipe() {
+        return recipe;
+    }
+
+    public int getProgress() {
+        return progress;
     }
 
     @Override
