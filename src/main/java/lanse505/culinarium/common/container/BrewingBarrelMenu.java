@@ -1,17 +1,16 @@
 package lanse505.culinarium.common.container;
 
 import lanse505.culinarium.common.block.impl.tile.barrel.BrewingBarrelTile;
-import lanse505.culinarium.common.container.base.CulinariumBaseMenu;
+import lanse505.culinarium.common.container.base.BaseBarrelMenu;
 import lanse505.culinarium.common.register.CulinariumMenuTypeRegistry;
 import lanse505.culinarium.server.recipe.BrewingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class BrewingBarrelMenu extends CulinariumBaseMenu {
+public class BrewingBarrelMenu extends BaseBarrelMenu {
 
     private BrewingRecipe local;
 
@@ -20,12 +19,12 @@ public class BrewingBarrelMenu extends CulinariumBaseMenu {
         this.SLOT_COUNT = 4;
         this.SLOT_INPUT = 0;
         this.SLOT_INPUT_END = 3;
-        layoutPlayerInventorySlots(player.getInventory(), 8, 95);
+        layoutPlayerInventorySlots(player.getInventory(), 8, 121);
         if (player.level().getBlockEntity(pos) instanceof BrewingBarrelTile brewing) {
-            addSlot(new SlotItemHandler(brewing.getStorage(), 0, 62, 11));
-            addSlot(new SlotItemHandler(brewing.getStorage(), 1, 98, 11));
-            addSlot(new SlotItemHandler(brewing.getStorage(), 2, 62, 29));
-            addSlot(new SlotItemHandler(brewing.getStorage(), 3, 98, 29));
+            addSlot(new SlotItemHandler(brewing.getStorage(), 0, 62, 37));
+            addSlot(new SlotItemHandler(brewing.getStorage(), 1, 98, 37));
+            addSlot(new SlotItemHandler(brewing.getStorage(), 2, 62, 55));
+            addSlot(new SlotItemHandler(brewing.getStorage(), 3, 98, 55));
         }
     }
 

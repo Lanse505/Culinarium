@@ -1,6 +1,7 @@
 package lanse505.culinarium.common.block.impl.tile.barrel;
 
 import lanse505.culinarium.common.block.base.tile.CulinariumBarrelTileBase;
+import lanse505.culinarium.common.block.impl.block.barrel.BrewingBarrelBlock;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import lanse505.culinarium.common.util.FluidTankBuilder;
 import lanse505.culinarium.common.util.ItemStackHandlerBuilder;
@@ -9,9 +10,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
@@ -31,6 +34,7 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
     // Variables
     private BrewingRecipe recipe = null; // TODO: Implement custom recipe here
     private int progress;
+    private boolean isSealed;
 
     public BrewingBarrelTile(BlockPos pPos, BlockState pBlockState) {
         super(CulinariumBlockRegistry.BREWING_BARREL.getBlock(),
@@ -41,6 +45,9 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
         this.storageCap = LazyOptional.of(() -> storage);
         this.brewed = FluidTankBuilder.builder(8000).build();
         this.brewedCap = LazyOptional.of(() -> brewed);
+        this.brewable.fill(new FluidStack(Fluids.WATER, 4000), IFluidHandler.FluidAction.EXECUTE);
+        this.brewed.fill(new FluidStack(Fluids.LAVA, 4000), IFluidHandler.FluidAction.EXECUTE);
+        this.isSealed = pBlockState.getValue(BrewingBarrelBlock.SEALED);
     }
 
     @Override
@@ -58,7 +65,6 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
                     .filter(r -> r.isValid(brewable, storage, brewed))
                     .findFirst().orElse(null);
         }
-
     }
 
     private boolean hasItemInStorage() {
@@ -96,6 +102,10 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
 
     public int getProgress() {
         return progress;
+    }
+
+    public boolean isSealed() {
+        return isSealed;
     }
 
     @Override

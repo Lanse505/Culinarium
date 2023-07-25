@@ -41,7 +41,7 @@ public class RenderUtil {
                         );
                         RenderSystem.enableBlend();
                         graphics.blit(
-                                x, y + paddingTop,
+                                x, y + paddingTop - 12,
                                 0,
                                 width, fluidHeight,
                                 sprite
