@@ -1,5 +1,6 @@
-package lanse505.culinarium.common.container.base;
+package lanse505.culinarium.common.menu.base;
 
+import lanse505.culinarium.Culinarium;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -11,9 +12,11 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import xyz.brassgoggledcoders.shadyskies.containersyncing.property.PropertyManager;
 
 public class CulinariumBaseMenu extends AbstractContainerMenu {
 
+    protected final PropertyManager propertyManager;
     protected final Player player;
     protected final BlockPos pos;
 
@@ -23,10 +26,11 @@ public class CulinariumBaseMenu extends AbstractContainerMenu {
     protected int SLOT_OUTPUT_END;
     protected int SLOT_COUNT;
 
-    protected CulinariumBaseMenu(@Nullable MenuType<?> menuType, int containerId, Player player, BlockPos pos) {
-        super(menuType, containerId);
+    protected CulinariumBaseMenu(@Nullable MenuType<?> menuType, int menuId, Player player, BlockPos pos) {
+        super(menuType, menuId);
         this.player = player;
         this.pos = pos;
+        this.propertyManager = Culinarium.getContainerSyncing().createManager(menuId);
     }
 
     public int addSlotRange(Container playerInventory, int index, int x, int y, int amount, int padX) {
@@ -112,6 +116,10 @@ public class CulinariumBaseMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(player.level(), this.pos), player, CulinariumBlockRegistry.BREWING_BARREL.getBlock());
+    }
+
+    public PropertyManager getPropertyManager() {
+        return this.propertyManager;
     }
 
     @FunctionalInterface

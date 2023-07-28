@@ -3,13 +3,13 @@ package lanse505.culinarium.client.gui;
 import lanse505.culinarium.Culinarium;
 import lanse505.culinarium.client.RenderUtil;
 import lanse505.culinarium.client.widget.BarrelSealingButton;
-import lanse505.culinarium.common.container.BrewingBarrelMenu;
+import lanse505.culinarium.common.menu.BrewingBarrelMenu;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.fluids.IFluidTank;
+import xyz.brassgoggledcoders.shadyskies.containersyncing.object.ProgressView;
+import xyz.brassgoggledcoders.shadyskies.containersyncing.object.TankView;
 
 public class BrewingBarrelScreen extends BaseBarrelScreen<BrewingBarrelMenu> {
 
@@ -52,11 +52,11 @@ public class BrewingBarrelScreen extends BaseBarrelScreen<BrewingBarrelMenu> {
     }
 
     private void renderTanks(GuiGraphics graphics) {
-        renderTank(true, graphics, menu.getBrewable());
-        renderTank(false, graphics, menu.getBrewed());
+        renderTank(true, graphics, this.menu.getBrewable().getOrElse(TankView.NULL));
+        renderTank(false, graphics, this.menu.getBrewed().getOrElse(TankView.NULL));
     }
 
-    private void renderTank(boolean isTop, GuiGraphics graphics, IFluidTank tank) {
+    private void renderTank(boolean isTop, GuiGraphics graphics, TankView tank) {
         if (isTop) {
             RenderUtil.renderFluid(this, graphics, this.leftPos + 8, this.topPos + 8, 160, 32, tank);
             RenderUtil.renderFluidTankBar(graphics, this.leftPos + 8, this.topPos + 3);
@@ -69,9 +69,10 @@ public class BrewingBarrelScreen extends BaseBarrelScreen<BrewingBarrelMenu> {
     }
 
     private void renderProgress(GuiGraphics guiGraphics) {
-        int elapsed = this.menu.getTicks();
+        ProgressView progress = this.menu.getProgress().getOrElse(ProgressView.NULL);
+        int elapsed = progress.current();
         if (elapsed > 0) {
-            int stage = (int)(7.0F * (1.0F - (float)elapsed / (float) this.menu.getMaxTicks()));
+            int stage = (int)(7.0F * (1.0F - (float)elapsed / (float) progress.max()));
 //            if (stage > 0) {
 //                guiGraphics.blit(BREWING_LOCATION, centeredX + 97, centeredY + 16, 178, 2, 9, stage);
 //            }
@@ -81,7 +82,4 @@ public class BrewingBarrelScreen extends BaseBarrelScreen<BrewingBarrelMenu> {
             }
         }
     }
-
-    @Override
-    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {}
 }

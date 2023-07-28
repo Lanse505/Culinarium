@@ -29,6 +29,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xyz.brassgoggledcoders.shadyskies.containersyncing.ContainerSyncing;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -57,6 +58,7 @@ import java.util.concurrent.CompletableFuture;
 public class Culinarium {
     public static final String MODID = "culinarium";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
+    private static ContainerSyncing containerSyncing;
 
     public Culinarium() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -72,6 +74,7 @@ public class Culinarium {
 
         // Event Subscription
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::gatherData);
 
         // Deferred Register
         CulinariumBlockRegistry.register(modEventBus);
@@ -79,12 +82,12 @@ public class Culinarium {
         CulinariumCreativeTabs.register(modEventBus);
         CulinariumRecipeRegistry.register(modEventBus);
         CulinariumMenuTypeRegistry.register(modEventBus);
+
+        containerSyncing = ContainerSyncing.setup(MODID, LOGGER);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         event.enqueueWork(this::registerCompostValues);
-        modEventBus.addListener(this::gatherData);
     }
 
     private void gatherData(GatherDataEvent event) {
@@ -120,5 +123,9 @@ public class Culinarium {
         ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.DOUGH.get(), 0.5F);
         ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.STRAW.get(), 0.5F);
         ComposterBlock.COMPOSTABLES.put(CulinariumItemRegistry.RYE.get(), 0.65F);
+    }
+
+    public static ContainerSyncing getContainerSyncing() {
+        return containerSyncing;
     }
 }

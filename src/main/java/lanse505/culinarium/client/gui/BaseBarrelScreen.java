@@ -1,7 +1,7 @@
 package lanse505.culinarium.client.gui;
 
 import lanse505.culinarium.client.widget.BarrelSealingButton;
-import lanse505.culinarium.common.container.base.BaseBarrelMenu;
+import lanse505.culinarium.common.menu.base.BaseBarrelMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;

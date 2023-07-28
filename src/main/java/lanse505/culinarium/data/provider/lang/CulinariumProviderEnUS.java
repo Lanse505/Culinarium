@@ -63,5 +63,7 @@ public class CulinariumProviderEnUS extends BaseCulinariumLangRegistry {
         add("itemGroup.culinarium", "Culinarium");
         add("itemGroup.culinarium_crops", "Culinarium: Crops");
         add("itemGroup.culinarium_processing", "Culinarium: Processing");
+        add("widget.extendable.barrel.seal", "Seal Barrel");
+        add("widget.extendable.barrel.unseal", "Unseal Barrel");
     }
 }

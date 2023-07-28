@@ -12,17 +12,18 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
+import xyz.brassgoggledcoders.shadyskies.containersyncing.object.TankView;
 
 import java.awt.*;
 
 public class RenderUtil {
 
-    public static void renderFluid(Screen screen, GuiGraphics graphics, int x, int y, int width, int maxHeight, IFluidTank tank) {
-        if (!tank.getFluid().isEmpty()) {
-            FluidStack stack = tank.getFluid();
+    public static void renderFluid(Screen screen, GuiGraphics graphics, int x, int y, int width, int maxHeight, TankView tank) {
+        if (!tank.fluidStack().isEmpty()) {
+            FluidStack stack = tank.fluidStack();
             Fluid fluid = stack.getFluid();
-            int fluidLevel = tank.getFluidAmount();
-            int maxFluidLevel = tank.getCapacity();
+            int fluidLevel = stack.getAmount();
+            int maxFluidLevel = tank.capacity();
             int fluidHeight = (int) ((float) fluidLevel / maxFluidLevel * maxHeight);
             int paddingTop = maxHeight - fluidHeight;
             IClientFluidTypeExtensions renderProperties = IClientFluidTypeExtensions.of(fluid);

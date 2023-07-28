@@ -1,7 +1,5 @@
 {
   "block.culinarium.brewing_barrel": "Brewing Barrel",
-  "block.culinarium.soaking_barrel": "Soaking Barrel",
-  "block.culinarium.storage_barrel": "Storage Barrel",
   "block.culinarium.chopping_board": "Chopping Board",
   "block.culinarium.millstone": "Millstone",
   "block.culinarium.rye": "Rye",
@@ -22,5 +20,7 @@
   "item.culinarium.wheat_husks": "Wheat Husks",
   "itemGroup.culinarium": "Culinarium",
   "itemGroup.culinarium_crops": "Culinarium: Crops",
-  "itemGroup.culinarium_processing": "Culinarium: Processing"
+  "itemGroup.culinarium_processing": "Culinarium: Processing",
+  "widget.extendable.barrel.seal": "Seal Barrel",
+  "widget.extendable.barrel.unseal": "Unseal Barrel"
 }

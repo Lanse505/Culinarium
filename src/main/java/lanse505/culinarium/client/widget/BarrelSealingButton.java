@@ -20,12 +20,12 @@ public class BarrelSealingButton extends BaseExtenderWidget {
         this.screen = screen;
         this.sealBtn = Button.builder(
                 Component.translatable("widget.extendable.barrel.seal"),
-                btn -> {} // TODO: Send Packet to seal/unseal barrel
-        ).bounds(x + 6, y + 4, 60, 20).tooltip(Tooltip.create(Component.translatable("widget.barrel.action.seal"))).build();
+                btn -> screen.getMenu().toggleSealed() // TODO: Send Packet to seal/unseal barrel
+        ).bounds(x + 6, y + 4, 62, 20).build();
         this.unsealBtn = Button.builder(
                 Component.translatable("widget.extendable.barrel.unseal"),
-                btn -> {} // TODO: Send Packet to seal/unseal barrel
-        ).bounds(x + 6, y + 4, 60, 20).tooltip(Tooltip.create(Component.translatable("widget.barrel.action.unseal"))).build();
+                btn -> screen.getMenu().toggleSealed() // TODO: Send Packet to seal/unseal barrel
+        ).bounds(x + 6, y + 4, 62, 20).build();
     }
 
     @Override
