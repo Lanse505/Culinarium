@@ -1,10 +1,9 @@
 package lanse505.culinarium.common.block.base.growable;
 
-import lanse505.culinarium.common.block.base.core.ICulinariumCoreBlock;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
-public class CulinariumCropBlock extends CropBlock implements ICulinariumCoreBlock {
+public class CulinariumCropBlock extends CropBlock {
 
     protected final int maxAge;
 

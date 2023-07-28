@@ -2,6 +2,7 @@ package lanse505.culinarium.common.block.impl.block;
 
 import lanse505.culinarium.common.block.base.CulinariumBaseTileBlock;
 import lanse505.culinarium.common.block.impl.tile.ChoppingBoardTile;
+import lanse505.culinarium.common.block.impl.tile.MillstoneTile;
 import lanse505.culinarium.common.register.CulinariumItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,8 +25,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ChoppingBoardBlock extends CulinariumBaseTileBlock<ChoppingBoardTile> {
 
-    private static final VoxelShape NS_shape = Shapes.box(0.0625D, 0.0D, 0.1875D, 0.9375D, 0.1875D, 0.8125D);
-    private static final VoxelShape WE_shape = Shapes.box(0.1875D, 0.0D, 0.0625D, 0.8125D, 0.1875D, 0.9375D);
+    private static final VoxelShape NS_shape = Block.box(1, 0, 3, 15, 3, 13);
+    private static final VoxelShape WE_shape = Block.box(3, 0, 1, 13, 3, 15);
 
     public ChoppingBoardBlock(Properties properties) {
         super(properties);
@@ -57,28 +59,30 @@ public class ChoppingBoardBlock extends CulinariumBaseTileBlock<ChoppingBoardTil
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (level.getBlockEntity(pos) instanceof ChoppingBoardTile choppingBoard) {
-            ItemStackHandler inventory = choppingBoard.getInventory();
-            if (!player.getMainHandItem().isEmpty() && inventory.getStackInSlot(0).isEmpty()) {
-                if (inventory.insertItem(0, player.getMainHandItem(), true) != player.getMainHandItem()) {
-                    inventory.insertItem(0, player.getMainHandItem(), false); // Insert into the inventory
-                    player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);     // Empty their Main-Hand.
-                    choppingBoard.markForUpdate();                                           // Mark for update
-                    return InteractionResult.SUCCESS;
-                }
-            }
-            if (!inventory.getStackInSlot(0).isEmpty() && player.getMainHandItem().isEmpty() && player.isCrouching()) {
-                if (inventory.extractItem(0, Integer.MAX_VALUE, true) != ItemStack.EMPTY) {
-                    ItemStack extracted = inventory.extractItem(0, Integer.MAX_VALUE, false);
-                    player.getInventory().placeItemBackInInventory(extracted, true);
-                    choppingBoard.markForUpdate(); // Mark for update
-                    return InteractionResult.SUCCESS;
-                }
-            }
-            if (player.getMainHandItem().is(CulinariumItemRegistry.KNIFE.get()) && !inventory.getStackInSlot(0).isEmpty()) {
-                return choppingBoard.performChop(player, hand);
+        if (level.isClientSide() || !(level.getBlockEntity(pos) instanceof ChoppingBoardTile choppingBoard))
+            return InteractionResult.PASS;
+
+        ItemStackHandler inventory = choppingBoard.getInventory();
+        if (!player.getMainHandItem().isEmpty() && inventory.getStackInSlot(0).isEmpty()) {
+            if (inventory.insertItem(0, player.getMainHandItem(), true) != player.getMainHandItem()) {
+                inventory.insertItem(0, player.getMainHandItem(), false); // Insert into the inventory
+                player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);     // Empty their Main-Hand.
+                choppingBoard.markForUpdate();                                           // Mark for update
+                return InteractionResult.SUCCESS;
             }
         }
+        if (!inventory.getStackInSlot(0).isEmpty() && player.getMainHandItem().isEmpty() && player.isCrouching()) {
+            if (inventory.extractItem(0, Integer.MAX_VALUE, true) != ItemStack.EMPTY) {
+                ItemStack extracted = inventory.extractItem(0, Integer.MAX_VALUE, false);
+                player.getInventory().placeItemBackInInventory(extracted, true);
+                choppingBoard.markForUpdate(); // Mark for update
+                return InteractionResult.SUCCESS;
+            }
+        }
+        if (player.getMainHandItem().is(CulinariumItemRegistry.KNIFE.get()) && !inventory.getStackInSlot(0).isEmpty()) {
+            return choppingBoard.performChop(player, hand);
+        }
+
         return super.use(state, level, pos, player, hand, hit);
     }
 

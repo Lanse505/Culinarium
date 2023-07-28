@@ -53,7 +53,7 @@ public class CulinariumBlockRegistry {
                     MillstoneTile::new,
                     CulinariumBlockRegistry::getDefaultType);
     public static final BlockHolderWithTile<ChoppingBoardBlock, BlockItem, ChoppingBoardTile> CHOPPING_BOARD =
-            registerBlockWithTile("chopping_block",
+            registerBlockWithTile("chopping_board",
                     () -> new ChoppingBoardBlock(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).noOcclusion()),
                     CulinariumBlockRegistry::getDefaultBlockItem,
                     ChoppingBoardTile::new,
@@ -70,7 +70,6 @@ public class CulinariumBlockRegistry {
         BLOCKS.register(bus);
         ITEMS.register(bus);
         BLOCK_ENTITY_TYPES.register(bus);
-        bus.addListener((CulinariumBlockRegistry::registerAdditionalBlockModels));
     }
 
     public static <BLOCK extends Block, BLOCKITEM extends BlockItem> RegistryObject<BLOCK> registerBlock
@@ -102,10 +101,7 @@ public class CulinariumBlockRegistry {
         return () -> new BlockEntityType<>(factory, Sets.newHashSet(block.get()), null);
     }
 
-    private static void registerAdditionalBlockModels(ModelEvent.RegisterAdditional event) {
-        event.register(new ResourceLocation(Culinarium.MODID, "block/millstone_top"));
-        event.register(new ResourceLocation(Culinarium.MODID, "block/millstone_bottom"));
-    }
+
 
     public record BlockHolderWithTile<BLOCK extends Block, BLOCKITEM extends BlockItem, T extends BlockEntity>
             (RegistryObject<BLOCK> blockRO, RegistryObject<BLOCKITEM> itemRO, RegistryObject<BlockEntityType<T>> typeRO) implements ItemLike {

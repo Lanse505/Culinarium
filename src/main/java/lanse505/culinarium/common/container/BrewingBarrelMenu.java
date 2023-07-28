@@ -5,49 +5,47 @@ import lanse505.culinarium.common.container.base.BaseBarrelMenu;
 import lanse505.culinarium.common.register.CulinariumMenuTypeRegistry;
 import lanse505.culinarium.server.recipe.BrewingRecipe;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class BrewingBarrelMenu extends BaseBarrelMenu {
 
     private BrewingRecipe local;
 
-    public BrewingBarrelMenu(int menuId, Player player, BlockPos pos) {
+    private FluidTank brewable;
+    private ItemStackHandler storage;
+    private FluidTank brewed;
+
+    public BrewingBarrelMenu(int menuId, Player player, BlockPos pos, FluidTank brewable, ItemStackHandler storage, FluidTank brewed) {
         super(CulinariumMenuTypeRegistry.BREWING_BARREL_MENU.get(), menuId, player, pos);
         this.SLOT_COUNT = 4;
         this.SLOT_INPUT = 0;
         this.SLOT_INPUT_END = 3;
         layoutPlayerInventorySlots(player.getInventory(), 8, 121);
-        if (player.level().getBlockEntity(pos) instanceof BrewingBarrelTile brewing) {
-            addSlot(new SlotItemHandler(brewing.getStorage(), 0, 62, 37));
-            addSlot(new SlotItemHandler(brewing.getStorage(), 1, 98, 37));
-            addSlot(new SlotItemHandler(brewing.getStorage(), 2, 62, 55));
-            addSlot(new SlotItemHandler(brewing.getStorage(), 3, 98, 55));
-        }
+        this.brewable = brewable;
+        this.storage = storage;
+        addSlot(new SlotItemHandler(storage, 0, 62, 37));
+        addSlot(new SlotItemHandler(storage, 1, 98, 37));
+        addSlot(new SlotItemHandler(storage, 2, 62, 55));
+        addSlot(new SlotItemHandler(storage, 3, 98, 55));
+        this.brewed = brewed;
     }
 
-    @SuppressWarnings("ConstantValue")
     public IFluidTank getBrewable() {
-        if (player.level() != null) {
-            BlockEntity be = player.level().getBlockEntity(pos);
-            if (be instanceof BrewingBarrelTile brewing) {
-                return brewing.getBrewable();
-            }
-        }
-        return null;
+        return brewable;
     }
 
-    @SuppressWarnings("ConstantValue")
+    public ItemStackHandler getStorage() {
+        return storage;
+    }
+
     public IFluidTank getBrewed() {
-        if (player.level() != null) {
-            BlockEntity be = player.level().getBlockEntity(pos);
-            if (be instanceof BrewingBarrelTile brewing) {
-                return brewing.getBrewed();
-            }
-        }
-        return null;
+        return brewed;
     }
 
     @SuppressWarnings("ConstantValue")

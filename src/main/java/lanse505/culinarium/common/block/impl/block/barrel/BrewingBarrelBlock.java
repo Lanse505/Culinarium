@@ -69,24 +69,14 @@ public class BrewingBarrelBlock extends CulinariumBarrelBase<BrewingBarrelTile> 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide) {
             BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof BrewingBarrelTile) {
-                MenuProvider provider = new MenuProvider() {
-                    @Override
-                    public Component getDisplayName() {
-                        return Component.translatable("block.culinarium.brewing_barrel");
-                    }
-
-                    @Nullable
-                    @Override
-                    public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-                        return new BrewingBarrelMenu(containerId, player, pos);
-                    }
-                };
-                NetworkHooks.openScreen((ServerPlayer) player, provider, be.getBlockPos());
+            if (be instanceof BrewingBarrelTile brewing) {
+                NetworkHooks.openScreen((ServerPlayer) player, brewing, be.getBlockPos());
+                return InteractionResult.PASS;
             } else {
                 throw new IllegalStateException("Our named container provider is missing!");
             }
         }
         return InteractionResult.PASS;
     }
+
 }

@@ -1,7 +1,6 @@
 package lanse505.culinarium.client.widget;
 
 import lanse505.culinarium.Culinarium;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
@@ -20,23 +19,23 @@ public abstract class BaseExtenderWidget extends Button {
     private final String identifier;
     protected boolean isLeftAligned;
     protected boolean isExtended;
-    protected int unexpanded_width;
-    protected int unexpanded_height;
-    protected int expanded_width;
-    protected int expanded_height;
+    protected int unexpandedWidth;
+    protected int unexpandedHeight;
+    protected int expandedWidth;
+    protected int expandedHeight;
 
     protected List<AbstractWidget> children;
 
     public BaseExtenderWidget(int x, int y,
-                              int width, int height, int expanded_width, int expanded_height,
+                              int width, int height, int expandedWidth, int expandedHeight,
                               String identifier, boolean isLeftAligned) {
         super(x, y, width, height, Component.translatable("widget.extendable." + identifier), btn -> {}, DEFAULT_NARRATION);
         this.identifier = identifier;
         this.isLeftAligned = isLeftAligned;
-        this.unexpanded_width = width;
-        this.unexpanded_height = height;
-        this.expanded_width = expanded_width;
-        this.expanded_height = expanded_height;
+        this.unexpandedWidth = width;
+        this.unexpandedHeight = height;
+        this.expandedWidth = expandedWidth;
+        this.expandedHeight = expandedHeight;
         this.children = new ArrayList<>();
     }
 
@@ -72,15 +71,15 @@ public abstract class BaseExtenderWidget extends Button {
         this.onPress();
         if (isMouseOver(mouseX, mouseY)) {
             this.isExtended = !this.isExtended;
-            if (this.width == this.unexpanded_height) {
-                this.width = this.expanded_width;
+            if (this.width == this.unexpandedHeight) {
+                this.width = this.expandedWidth;
             } else {
-                this.width = unexpanded_width;
+                this.width = unexpandedWidth;
             }
-            if (this.height == this.unexpanded_height) {
-                this.height = this.expanded_height;
+            if (this.height == this.unexpandedHeight) {
+                this.height = this.expandedHeight;
             } else {
-                this.height = this.unexpanded_height;
+                this.height = this.unexpandedHeight;
             }
         }
     }

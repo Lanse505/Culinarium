@@ -1,8 +1,6 @@
 package lanse505.culinarium.common.block.impl.tile;
 
-import lanse505.culinarium.common.block.base.CulinariumBaseTileBlock;
 import lanse505.culinarium.common.block.base.tile.CulinariumActiveTile;
-import lanse505.culinarium.common.block.menu.handler.AdaptedItemHandler;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import lanse505.culinarium.common.util.ItemStackHandlerBuilder;
 import lanse505.culinarium.server.recipe.MillingRecipe;
@@ -42,7 +40,7 @@ public class MillstoneTile extends CulinariumActiveTile<MillstoneTile> {
             .slots(1)
             .insertCondition(this::hasValidRecipe)
             .build();
-    private final LazyOptional<IItemHandler> inventoryHandler = LazyOptional.of(() -> new AdaptedItemHandler(inventory));
+    private final LazyOptional<IItemHandler> inventoryHandler = LazyOptional.of(() -> inventory);
 
     public boolean isMilling;
 

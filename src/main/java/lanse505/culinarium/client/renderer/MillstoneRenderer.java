@@ -40,14 +40,15 @@ public class MillstoneRenderer implements BlockEntityRenderer<MillstoneTile> {
         ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
 
         int i = millable.isEmpty() ? 187 : Item.getId(millable.getItem()) + millable.getDamageValue();
-        stack.translate(0.5, 0.325, 0.5);
-
         stack.pushPose();
-        renderer.renderStatic(millable, ItemDisplayContext.GROUND, LevelRenderer.getLightColor(millstone.getLevel(), millstone.getBlockPos()), OverlayTexture.NO_OVERLAY, stack, source, millstone.getLevel(), i);
+            stack.translate(0.5, 0.325, 0.5);
+            renderer.renderStatic(millable, ItemDisplayContext.GROUND, LevelRenderer.getLightColor(millstone.getLevel(), millstone.getBlockPos()), OverlayTexture.NO_OVERLAY, stack, source, millstone.getLevel(), i);
         stack.popPose();
 
-        stack.pushPose();
         Direction direction = millstone.getBlockState().getValue(CulinariumRotatableBlock.FACING_HORIZONTAL);
+
+        stack.pushPose();
+        stack.translate(0.5, 0.325, 0.5);
         switch (direction) {
             case NORTH -> stack.mulPose(Axis.YN.rotationDegrees(90));
             case EAST -> stack.mulPose(Axis.YN.rotationDegrees(180));

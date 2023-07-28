@@ -31,6 +31,7 @@ public class ChoppingBoardRenderer implements BlockEntityRenderer<ChoppingBoardT
         ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
 
         int i = choppable.isEmpty() ? 187 : Item.getId(choppable.getItem()) + choppable.getDamageValue();
+        stack.pushPose();
         stack.translate(0.5, 0.25, 0.5);
 
         Direction direction = choppingBoard.getBlockState().getValue(CulinariumRotatableBlock.FACING_HORIZONTAL);
@@ -62,8 +63,6 @@ public class ChoppingBoardRenderer implements BlockEntityRenderer<ChoppingBoardT
                 stack.mulPose(Axis.ZP.rotationDegrees(135));
             }
         }
-
-        stack.pushPose();
         renderer.renderStatic(choppable, ItemDisplayContext.GROUND, LevelRenderer.getLightColor(choppingBoard.getLevel(), choppingBoard.getBlockPos()), OverlayTexture.NO_OVERLAY, stack, source, choppingBoard.getLevel(), i);
         stack.popPose();
 

@@ -2,12 +2,18 @@ package lanse505.culinarium.common.block.impl.tile.barrel;
 
 import lanse505.culinarium.common.block.base.tile.CulinariumBarrelTileBase;
 import lanse505.culinarium.common.block.impl.block.barrel.BrewingBarrelBlock;
+import lanse505.culinarium.common.container.BrewingBarrelMenu;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import lanse505.culinarium.common.util.FluidTankBuilder;
 import lanse505.culinarium.common.util.ItemStackHandlerBuilder;
 import lanse505.culinarium.server.recipe.BrewingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
@@ -21,7 +27,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTile> {
+public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTile> implements MenuProvider {
 
     // Capabilities
     private final FluidTank brewable;
@@ -123,5 +129,17 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
             if (side == Direction.DOWN) return brewedCap.cast();
         }
         return super.getCapability(cap, side);
+    }
+
+
+    @Override
+    public Component getDisplayName() {
+        return Component.translatable("block.culinarium.brewing_barrel");
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+        return new BrewingBarrelMenu(containerId, player, this.getBlockPos(), getBrewable(), getStorage(), getBrewed());
     }
 }
