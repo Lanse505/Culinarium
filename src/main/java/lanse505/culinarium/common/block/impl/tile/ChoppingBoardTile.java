@@ -4,7 +4,7 @@ import lanse505.culinarium.common.block.base.tile.CulinariumActiveTile;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import lanse505.culinarium.common.register.CulinariumItemRegistry;
 import lanse505.culinarium.common.util.ItemStackHandlerBuilder;
-import lanse505.culinarium.server.recipe.ChoppingRecipe;
+import lanse505.culinarium.common.recipe.ChoppingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

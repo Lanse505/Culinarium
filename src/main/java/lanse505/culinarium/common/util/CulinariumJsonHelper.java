@@ -1,4 +1,4 @@
-package lanse505.culinarium.server.helper;
+package lanse505.culinarium.common.util;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;

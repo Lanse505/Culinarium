@@ -1,21 +1,16 @@
 package lanse505.culinarium.common.block.impl.tile.barrel;
 
-import lanse505.culinarium.Culinarium;
 import lanse505.culinarium.common.block.base.tile.CulinariumBarrelTileBase;
-import lanse505.culinarium.common.block.impl.block.barrel.BrewingBarrelBlock;
 import lanse505.culinarium.common.menu.BrewingBarrelMenu;
+import lanse505.culinarium.common.recipe.BrewingRecipe;
+import lanse505.culinarium.common.recipe.BrewingRecipe.RecipeIngredient;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import lanse505.culinarium.common.util.FluidTankBuilder;
 import lanse505.culinarium.common.util.ItemStackHandlerBuilder;
-import lanse505.culinarium.server.recipe.BrewingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -47,7 +42,6 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
   // Variables
   private BrewingRecipe recipe = null;
   private int progress;
-  private int debugTicks = 0;
 
   public BrewingBarrelTile(BlockPos pPos, BlockState pBlockState) {
     super(CulinariumBlockRegistry.BREWING_BARREL.getBlock(),
@@ -66,27 +60,27 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
   public void clientTick(Level level, BlockPos pos, BlockState state, BrewingBarrelTile blockEntity) {
     super.clientTick(level, pos, state, blockEntity);
     markForUpdate();
-    debugTicks++;
-    if (debugTicks == 20) {
-      Culinarium.LOGGER.info("Client Tick - State: " + state.getValue(BrewingBarrelBlock.SEALED));
-      debugTicks = 0;
-    }
   }
 
   @Override
   public void serverTick(Level level, BlockPos pos, BlockState state, BrewingBarrelTile blockEntity) {
     super.serverTick(level, pos, state, blockEntity);
-    debugTicks++;
-    if (debugTicks == 20) {
-      Culinarium.LOGGER.info("Server Tick - State: " + state.getValue(BrewingBarrelBlock.SEALED));
-      debugTicks = 0;
-    }
     if (!brewable.isEmpty() && hasItemInStorage()) {
-      recipe = level.getRecipeManager().getRecipes().stream()
+      this.recipe = level.getRecipeManager().getRecipes().stream()
               .filter(BrewingRecipe.class::isInstance)
               .map(BrewingRecipe.class::cast)
               .filter(r -> r.isValid(brewable, storage, brewed))
               .findFirst().orElse(null);
+    }
+    if (recipe != null) {
+      if (progress < 100) {
+        progress++;
+      } else {
+        finishBrewing();
+        progress = 0;
+      }
+    } else {
+      progress = 0;
     }
   }
 
@@ -101,7 +95,8 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
     if (recipe != null) {
       brewable.drain(recipe.getBrewable(), IFluidHandler.FluidAction.EXECUTE);
       for (int i = 0; i < storage.getSlots(); i++) {
-        storage.getStackInSlot(i).shrink(1);
+        RecipeIngredient ingredient = recipe.getRecipeIngredients().get(i);
+        storage.getStackInSlot(i).shrink(ingredient.count());
       }
       brewed.fill(recipe.getBrewed(), IFluidHandler.FluidAction.EXECUTE);
     }
@@ -163,60 +158,22 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
   }
 
   @Override
-  protected void saveAdditional(CompoundTag pTag) {
-    super.saveAdditional(pTag);
-    pTag.put("brewable", brewable.writeToNBT(new CompoundTag()));
-    pTag.put("storage", storage.serializeNBT());
-    pTag.put("brewed", brewed.writeToNBT(new CompoundTag()));
-    pTag.putInt("progress", progress);
-    if (recipe != null) pTag.putString("recipe", recipe.getId().toString());
-  }
-
-  @Override
-  public void load(CompoundTag pTag) {
-    super.load(pTag);
-    this.brewable = brewable.readFromNBT(pTag.getCompound("brewable"));
-    this.storage.deserializeNBT(pTag.getCompound("storage"));
-    this.brewed = brewed.readFromNBT(pTag.getCompound("brewed"));
-    if (pTag.contains("recipe") && level != null) {
-      recipe = (BrewingRecipe) level.getRecipeManager().byKey(new ResourceLocation(pTag.getString("recipe"))).orElse(null);
-    }
-  }
-
-  @Override
-  public CompoundTag getUpdateTag() {
-    CompoundTag tag = super.getUpdateTag();
+  public void writeTileNBT(CompoundTag tag) {
     tag.put("brewable", brewable.writeToNBT(new CompoundTag()));
     tag.put("storage", storage.serializeNBT());
     tag.put("brewed", brewed.writeToNBT(new CompoundTag()));
     tag.putInt("progress", progress);
     if (recipe != null) tag.putString("recipe", recipe.getId().toString());
-    return tag;
   }
 
   @Override
-  public void handleUpdateTag(CompoundTag tag) {
-    super.handleUpdateTag(tag);
+  public void readTileNBT(CompoundTag tag) {
     this.brewable = brewable.readFromNBT(tag.getCompound("brewable"));
     this.storage.deserializeNBT(tag.getCompound("storage"));
     this.brewed = brewed.readFromNBT(tag.getCompound("brewed"));
-    this.progress = tag.getInt("progress");
     if (tag.contains("recipe") && level != null) {
-      recipe = (BrewingRecipe) level.getRecipeManager().byKey(new ResourceLocation(tag.getString("recipe"))).orElse(null);
+      this.recipe = (BrewingRecipe) level.getRecipeManager().byKey(new ResourceLocation(tag.getString("recipe"))).orElse(null);
     }
-  }
-
-  @Override
-  public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-    if (pkt.getTag() != null) {
-      this.handleUpdateTag(pkt.getTag());
-    }
-  }
-
-  @Nullable
-  @Override
-  public Packet<ClientGamePacketListener> getUpdatePacket() {
-    return ClientboundBlockEntityDataPacket.create(this);
   }
 
 }

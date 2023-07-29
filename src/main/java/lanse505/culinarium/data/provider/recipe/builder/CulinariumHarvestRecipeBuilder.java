@@ -3,7 +3,7 @@ package lanse505.culinarium.data.provider.recipe.builder;
 import com.google.gson.JsonObject;
 import lanse505.culinarium.common.register.CulinariumRecipeRegistry;
 import lanse505.culinarium.data.provider.recipe.base.CulinariumBaseRecipeBuilder;
-import lanse505.culinarium.server.helper.CulinariumJsonHelper;
+import lanse505.culinarium.common.util.CulinariumJsonHelper;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;

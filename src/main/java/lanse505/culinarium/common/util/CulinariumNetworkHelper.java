@@ -1,4 +1,4 @@
-package lanse505.culinarium.server.helper;
+package lanse505.culinarium.common.util;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.NbtUtils;

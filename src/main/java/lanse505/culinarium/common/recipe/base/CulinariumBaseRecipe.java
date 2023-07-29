@@ -1,4 +1,4 @@
-package lanse505.culinarium.server.recipe.base;
+package lanse505.culinarium.common.recipe.base;
 
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;

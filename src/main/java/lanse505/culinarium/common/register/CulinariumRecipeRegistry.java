@@ -1,10 +1,10 @@
 package lanse505.culinarium.common.register;
 
 import lanse505.culinarium.Culinarium;
-import lanse505.culinarium.server.recipe.ChoppingRecipe;
-import lanse505.culinarium.server.recipe.DoughRecipe;
-import lanse505.culinarium.server.recipe.HarvestRecipe;
-import lanse505.culinarium.server.recipe.MillingRecipe;
+import lanse505.culinarium.common.recipe.ChoppingRecipe;
+import lanse505.culinarium.common.recipe.DoughRecipe;
+import lanse505.culinarium.common.recipe.HarvestRecipe;
+import lanse505.culinarium.common.recipe.MillingRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;

@@ -3,7 +3,7 @@ package lanse505.culinarium.common.block.impl.tile;
 import lanse505.culinarium.common.block.base.tile.CulinariumActiveTile;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import lanse505.culinarium.common.util.ItemStackHandlerBuilder;
-import lanse505.culinarium.server.recipe.MillingRecipe;
+import lanse505.culinarium.common.recipe.MillingRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

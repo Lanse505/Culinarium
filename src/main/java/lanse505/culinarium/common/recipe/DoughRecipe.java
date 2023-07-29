@@ -1,4 +1,4 @@
-package lanse505.culinarium.server.recipe;
+package lanse505.culinarium.common.recipe;
 
 import lanse505.culinarium.common.register.CulinariumItemRegistry;
 import lanse505.culinarium.common.register.CulinariumRecipeRegistry;

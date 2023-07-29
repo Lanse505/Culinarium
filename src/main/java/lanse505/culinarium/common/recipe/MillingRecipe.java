@@ -1,4 +1,4 @@
-package lanse505.culinarium.server.recipe;
+package lanse505.culinarium.common.recipe;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import lanse505.culinarium.common.register.CulinariumRecipeRegistry;
 import lanse505.culinarium.data.provider.recipe.base.CulinariumBaseRecipeBuilder;
-import lanse505.culinarium.server.recipe.MillingRecipe;
+import lanse505.culinarium.common.recipe.MillingRecipe;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;

@@ -3,7 +3,7 @@ package lanse505.culinarium.common.events;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lanse505.culinarium.Culinarium;
-import lanse505.culinarium.server.recipe.HarvestRecipe;
+import lanse505.culinarium.common.recipe.HarvestRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Items;

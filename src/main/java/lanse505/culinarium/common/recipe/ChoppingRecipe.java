@@ -1,8 +1,8 @@
-package lanse505.culinarium.server.recipe;
+package lanse505.culinarium.common.recipe;
 
 import com.google.gson.JsonObject;
+import lanse505.culinarium.common.recipe.base.CulinariumBaseRecipe;
 import lanse505.culinarium.common.register.CulinariumRecipeRegistry;
-import lanse505.culinarium.server.recipe.base.CulinariumBaseRecipe;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
