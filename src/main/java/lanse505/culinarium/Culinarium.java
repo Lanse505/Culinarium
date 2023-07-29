@@ -68,7 +68,6 @@ public class Culinarium {
 
     public Culinarium() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        handler.init();
 
         // Register listeners
         if (FMLEnvironment.dist == Dist.CLIENT) {
@@ -95,6 +94,7 @@ public class Culinarium {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(this::registerCompostValues);
+        handler.init();
     }
 
     private void gatherData(GatherDataEvent event) {

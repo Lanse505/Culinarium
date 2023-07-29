@@ -10,9 +10,9 @@ import java.util.function.Supplier;
 
 public class CulinariumClientProxy extends CulinariumCommonProxy {
   @Override
-  public Player getPlayer(Supplier<NetworkEvent.Context> context) {
-    if (context.get().getDirection() == NetworkDirection.PLAY_TO_SERVER || context.get().getDirection() == NetworkDirection.LOGIN_TO_SERVER) {
-      return context.get().getSender();
+  public Player getPlayer(NetworkEvent.Context context) {
+    if (context.getDirection() == NetworkDirection.PLAY_TO_SERVER || context.getDirection() == NetworkDirection.LOGIN_TO_SERVER) {
+      return context.getSender();
     }
     return Minecraft.getInstance().player;
   }

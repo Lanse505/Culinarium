@@ -22,6 +22,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
@@ -221,7 +222,4 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public void toggleSeal(BlockPos pos) {
-
-    }
 }

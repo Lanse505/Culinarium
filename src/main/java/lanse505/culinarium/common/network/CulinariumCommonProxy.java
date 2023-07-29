@@ -6,7 +6,7 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class CulinariumCommonProxy {
-  public Player getPlayer(Supplier<NetworkEvent.Context> context) {
-    return context.get().getSender();
+  public Player getPlayer(NetworkEvent.Context context) {
+    return context.getSender();
   }
 }
