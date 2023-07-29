@@ -1,6 +1,9 @@
 package lanse505.culinarium;
 
 import lanse505.culinarium.client.CulinariumClient;
+import lanse505.culinarium.common.network.CulinariumCommonProxy;
+import lanse505.culinarium.common.network.CulinariumNetworkHandler;
+import lanse505.culinarium.common.network.provider.CulinariumSafeSuppliers;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import lanse505.culinarium.common.register.CulinariumItemRegistry;
 import lanse505.culinarium.common.register.CulinariumMenuTypeRegistry;
@@ -22,6 +25,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
@@ -59,9 +63,12 @@ public class Culinarium {
     public static final String MODID = "culinarium";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
     private static ContainerSyncing containerSyncing;
+    public static CulinariumCommonProxy proxy = DistExecutor.safeRunForDist(CulinariumSafeSuppliers.getClientProxy(), CulinariumSafeSuppliers.getServerProxy());
+    public static CulinariumNetworkHandler handler = new CulinariumNetworkHandler();
 
     public Culinarium() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        handler.init();
 
         // Register listeners
         if (FMLEnvironment.dist == Dist.CLIENT) {

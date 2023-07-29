@@ -2,10 +2,12 @@ package lanse505.culinarium.common.menu.base;
 
 import lanse505.culinarium.common.block.impl.block.barrel.BrewingBarrelBlock;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.protocol.game.ServerboundClientInformationPacket;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.Nullable;
 import xyz.brassgoggledcoders.shadyskies.containersyncing.property.Property;
 import xyz.brassgoggledcoders.shadyskies.containersyncing.property.PropertyTypes;
@@ -27,6 +29,7 @@ public class BaseBarrelMenu extends CulinariumBaseMenu {
                     BlockState state = player.level().getBlockState(pos);
                     if (state.getBlock() instanceof BrewingBarrelBlock) {
                         player.level().setBlock(pos, state.setValue(BrewingBarrelBlock.SEALED, value), Block.UPDATE_IMMEDIATE);
+                        player.level().sendBlockUpdated(pos, state, state.setValue(BrewingBarrelBlock.SEALED, value), Block.UPDATE_IMMEDIATE);
                     }
                 })
         );

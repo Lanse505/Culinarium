@@ -1,6 +1,8 @@
 package lanse505.culinarium.common.block.impl.tile.barrel;
 
+import lanse505.culinarium.Culinarium;
 import lanse505.culinarium.common.block.base.tile.CulinariumBarrelTileBase;
+import lanse505.culinarium.common.block.impl.block.barrel.BrewingBarrelBlock;
 import lanse505.culinarium.common.menu.BrewingBarrelMenu;
 import lanse505.culinarium.common.register.CulinariumBlockRegistry;
 import lanse505.culinarium.common.util.FluidTankBuilder;
@@ -60,14 +62,27 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
         this.brewed.fill(new FluidStack(Fluids.LAVA, 4000), IFluidHandler.FluidAction.EXECUTE);
     }
 
+    private int debugTicks = 0;
+
     @Override
     public void clientTick(Level level, BlockPos pos, BlockState state, BrewingBarrelTile blockEntity) {
         super.clientTick(level, pos, state, blockEntity);
+        markForUpdate();
+        debugTicks++;
+        if (debugTicks == 20) {
+            Culinarium.LOGGER.info("Client Tick - State: " + state.getValue(BrewingBarrelBlock.SEALED));
+            debugTicks = 0;
+        }
     }
 
     @Override
     public void serverTick(Level level, BlockPos pos, BlockState state, BrewingBarrelTile blockEntity) {
         super.serverTick(level, pos, state, blockEntity);
+        debugTicks++;
+        if (debugTicks == 20) {
+            Culinarium.LOGGER.info("Server Tick - State: " + state.getValue(BrewingBarrelBlock.SEALED));
+            debugTicks = 0;
+        }
         if (!brewable.isEmpty() && hasItemInStorage()) {
             recipe = level.getRecipeManager().getRecipes().stream()
                     .filter(BrewingRecipe.class::isInstance)
@@ -204,5 +219,9 @@ public class BrewingBarrelTile extends CulinariumBarrelTileBase<BrewingBarrelTil
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    public void toggleSeal(BlockPos pos) {
+
     }
 }
