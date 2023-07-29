@@ -30,112 +30,112 @@ import java.util.Arrays;
 
 public abstract class CulinariumBarrelBase<T extends CulinariumBaseTile<T>> extends CulinariumBaseTileBlock<T> {
 
-    public static final BooleanProperty SEALED = BooleanProperty.create("sealed");
+  public static final BooleanProperty SEALED = BooleanProperty.create("sealed");
 
-    public CulinariumBarrelBase(Properties properties) {
-        super(properties);
-    }
+  public CulinariumBarrelBase(Properties properties) {
+    super(properties);
+  }
 
-    @NotNull
-    @Override
-    public RotationType getRotationType() {
-        return RotationType.SIX_WAY;
-    }
+  @NotNull
+  @Override
+  public RotationType getRotationType() {
+    return RotationType.SIX_WAY;
+  }
 
-    @Override
-    public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+  @Override
+  public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+    return true;
+  }
+
+  @Nullable
+  @Override
+  public BlockState getStateForPlacement(BlockPlaceContext pContext) {
+    return defaultBlockState().setValue(SEALED, false);
+  }
+
+  @Override
+  public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
+    return direction != null && direction.getAxis().isHorizontal();
+  }
+
+  @Override
+  protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
+    super.createBlockStateDefinition(pBuilder.add(SEALED));
+  }
+
+  @Override
+  public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+    super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+    if (state.getValue(SEALED)) return;
+    boolean hasSignal = Arrays.stream(Direction.values()).anyMatch(dir -> getNeighborSignal(level, pos, dir));
+    if (hasSignal)
+      state.setValue(SEALED, true);
+    else
+      state.setValue(SEALED, false);
+  }
+
+  private boolean getNeighborSignal(SignalGetter pSignalGetter, BlockPos pPos, Direction pDirection) {
+    for (Direction direction : Direction.values())
+      if (direction != pDirection && pSignalGetter.hasSignal(pPos.relative(direction), direction))
         return true;
-    }
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return defaultBlockState().setValue(SEALED, false);
-    }
-
-    @Override
-    public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, @Nullable Direction direction) {
-        return direction != null && direction.getAxis().isHorizontal();
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder.add(SEALED));
-    }
-
-    @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
-        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
-        if (state.getValue(SEALED)) return;
-        boolean hasSignal = Arrays.stream(Direction.values()).anyMatch(dir -> getNeighborSignal(level, pos, dir));
-        if (hasSignal)
-            state.setValue(SEALED, true);
-        else
-            state.setValue(SEALED, false);
-    }
-
-    private boolean getNeighborSignal(SignalGetter pSignalGetter, BlockPos pPos, Direction pDirection) {
-        for (Direction direction : Direction.values())
-            if (direction != pDirection && pSignalGetter.hasSignal(pPos.relative(direction), direction))
-                return true;
-        BlockPos blockpos = pPos.above();
-        for (Direction direction : Direction.values())
-            if (direction != Direction.DOWN && pSignalGetter.hasSignal(blockpos.relative(direction), direction))
-                return true;
-        return pSignalGetter.hasSignal(pPos, Direction.DOWN);
-    }
-
-    @Override
-    public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
-        return super.isValidSpawn(state, level, pos, type, entityType) && state.getValue(SEALED);
-    }
-
-    @Override
-    public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    BlockPos blockpos = pPos.above();
+    for (Direction direction : Direction.values())
+      if (direction != Direction.DOWN && pSignalGetter.hasSignal(blockpos.relative(direction), direction))
         return true;
-    }
+    return pSignalGetter.hasSignal(pPos, Direction.DOWN);
+  }
 
-    @Override
-    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-        return 0;
-    }
+  @Override
+  public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, SpawnPlacements.Type type, EntityType<?> entityType) {
+    return super.isValidSpawn(state, level, pos, type, entityType) && state.getValue(SEALED);
+  }
 
-    @Override
-    public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
-        super.onNeighborChange(state, level, pos, neighbor);
+  @Override
+  public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    return true;
+  }
 
-    }
+  @Override
+  public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+    return 0;
+  }
 
-    @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        T be = getTypedBE(level, pos);
-        if (be instanceof CulinariumBarrelTileBase<?>) {
-            //T barrelTileT = (T) btt;
-            if (stack.getTag() != null) {
-                state.setValue(SEALED, stack.getTag().getBoolean("Sealed"));
-            } else {
-                state.setValue(SEALED, false);
-            }
-        }
-    }
+  @Override
+  public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
+    super.onNeighborChange(state, level, pos, neighbor);
 
-    @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
-        T be = getTypedBE(level, pos);
-        if (be instanceof CulinariumBarrelTileBase<?>) {
-            // Setup stack
-            ItemStack stack = new ItemStack(this.asItem());
-            // Setup NBT
-            CompoundTag tag = new CompoundTag();
-            tag.putBoolean("Sealed", state.getValue(SEALED));
-            getAdditionalNBTForDrop(level, player, pos, state, blockEntity, tool, tag);
-            stack.setTag(tag);
-            // Setup ItemEntity & Drop
-            ItemEntity dropped = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
-            dropped.addDeltaMovement(DropsUtil.getDropDelta(pos, level));
-            level.addFreshEntity(dropped);
-        }
-        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+  }
+
+  @Override
+  public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+    T be = getTypedBE(level, pos);
+    if (be instanceof CulinariumBarrelTileBase<?>) {
+      //T barrelTileT = (T) btt;
+      if (stack.getTag() != null) {
+        state.setValue(SEALED, stack.getTag().getBoolean("Sealed"));
+      } else {
+        state.setValue(SEALED, false);
+      }
     }
+  }
+
+  @Override
+  public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+    T be = getTypedBE(level, pos);
+    if (be instanceof CulinariumBarrelTileBase<?>) {
+      // Setup stack
+      ItemStack stack = new ItemStack(this.asItem());
+      // Setup NBT
+      CompoundTag tag = new CompoundTag();
+      tag.putBoolean("Sealed", state.getValue(SEALED));
+      getAdditionalNBTForDrop(level, player, pos, state, blockEntity, tool, tag);
+      stack.setTag(tag);
+      // Setup ItemEntity & Drop
+      ItemEntity dropped = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), stack);
+      dropped.addDeltaMovement(DropsUtil.getDropDelta(pos, level));
+      level.addFreshEntity(dropped);
+    }
+    super.playerDestroy(level, player, pos, state, blockEntity, tool);
+  }
 
 }

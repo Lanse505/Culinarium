@@ -11,51 +11,50 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidTank;
 import xyz.brassgoggledcoders.shadyskies.containersyncing.object.TankView;
 
 import java.awt.*;
 
 public class RenderUtil {
 
-    public static void renderFluid(Screen screen, GuiGraphics graphics, int x, int y, int width, int maxHeight, TankView tank) {
-        if (!tank.fluidStack().isEmpty()) {
-            FluidStack stack = tank.fluidStack();
-            Fluid fluid = stack.getFluid();
-            int fluidLevel = stack.getAmount();
-            int maxFluidLevel = tank.capacity();
-            int fluidHeight = (int) ((float) fluidLevel / maxFluidLevel * maxHeight);
-            int paddingTop = maxHeight - fluidHeight;
-            IClientFluidTypeExtensions renderProperties = IClientFluidTypeExtensions.of(fluid);
-            ResourceLocation textureId = renderProperties.getStillTexture();
-            if (textureId != null) {
-                AbstractTexture texture = screen.getMinecraft().textureManager.getTexture(TextureAtlas.LOCATION_BLOCKS);
-                if (texture instanceof TextureAtlas atlas) {
-                    TextureAtlasSprite sprite = atlas.getSprite(textureId);
-                    if (sprite != null) {
-                        Color color = new Color(renderProperties.getTintColor(stack));
-                        graphics.setColor(
-                                color.getRed() / 255f,
-                                color.getGreen() / 255f,
-                                color.getBlue() / 255f,
-                                color.getAlpha() / 255f
-                        );
-                        RenderSystem.enableBlend();
-                        graphics.blit(
-                                x, y + paddingTop - 12,
-                                0,
-                                width, fluidHeight,
-                                sprite
-                        );
-                        RenderSystem.disableBlend();
-                        graphics.setColor(1, 1, 1, 1);
-                    }
-                }
-            }
+  public static void renderFluid(Screen screen, GuiGraphics graphics, int x, int y, int width, int maxHeight, TankView tank) {
+    if (!tank.fluidStack().isEmpty()) {
+      FluidStack stack = tank.fluidStack();
+      Fluid fluid = stack.getFluid();
+      int fluidLevel = stack.getAmount();
+      int maxFluidLevel = tank.capacity();
+      int fluidHeight = (int) ((float) fluidLevel / maxFluidLevel * maxHeight);
+      int paddingTop = maxHeight - fluidHeight;
+      IClientFluidTypeExtensions renderProperties = IClientFluidTypeExtensions.of(fluid);
+      ResourceLocation textureId = renderProperties.getStillTexture();
+      if (textureId != null) {
+        AbstractTexture texture = screen.getMinecraft().textureManager.getTexture(TextureAtlas.LOCATION_BLOCKS);
+        if (texture instanceof TextureAtlas atlas) {
+          TextureAtlasSprite sprite = atlas.getSprite(textureId);
+          if (sprite != null) {
+            Color color = new Color(renderProperties.getTintColor(stack));
+            graphics.setColor(
+                    color.getRed() / 255f,
+                    color.getGreen() / 255f,
+                    color.getBlue() / 255f,
+                    color.getAlpha() / 255f
+            );
+            RenderSystem.enableBlend();
+            graphics.blit(
+                    x, y + paddingTop - 12,
+                    0,
+                    width, fluidHeight,
+                    sprite
+            );
+            RenderSystem.disableBlend();
+            graphics.setColor(1, 1, 1, 1);
+          }
         }
+      }
     }
+  }
 
-    public static void renderFluidTankBar(GuiGraphics graphics, int x, int y) {
-        graphics.blit(BrewingBarrelScreen.BREWING_LOCATION, x, y, 193, 3, 9, 18);
-    }
+  public static void renderFluidTankBar(GuiGraphics graphics, int x, int y) {
+    graphics.blit(BrewingBarrelScreen.BREWING_LOCATION, x, y, 193, 3, 9, 18);
+  }
 }

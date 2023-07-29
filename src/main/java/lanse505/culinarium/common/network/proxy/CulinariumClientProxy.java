@@ -6,8 +6,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
-
 public class CulinariumClientProxy extends CulinariumCommonProxy {
   @Override
   public Player getPlayer(NetworkEvent.Context context) {

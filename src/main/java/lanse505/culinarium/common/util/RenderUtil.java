@@ -13,27 +13,27 @@ import net.minecraftforge.client.model.data.ModelData;
 
 public class RenderUtil {
 
-    public static void renderBEModelWithTesselatedAO(BlockEntityRendererProvider.Context context,
-                                                     BlockEntity blockEntity,
-                                                     BakedModel model, BlockState state,
-                                                     PoseStack stack, VertexConsumer buffer, boolean checkSides,
-                                                     ModelData data, RenderType renderType) {
-        context.getBlockRenderDispatcher()
-                .getModelRenderer()
-                .tesselateWithAO(
-                        blockEntity.getLevel(),
-                        model,
-                        state,
-                        blockEntity.getBlockPos(),
-                        stack,
-                        buffer,
-                        checkSides,
-                        RandomSource.create(),
-                        blockEntity.getBlockPos().asLong(),
-                        OverlayTexture.NO_OVERLAY,
-                        data,
-                        renderType
-                );
-    }
+  public static void renderBEModelWithTesselatedAO(BlockEntityRendererProvider.Context context,
+                                                   BlockEntity blockEntity,
+                                                   BakedModel model, BlockState state,
+                                                   PoseStack stack, VertexConsumer buffer, boolean checkSides,
+                                                   ModelData data, RenderType renderType) {
+    context.getBlockRenderDispatcher()
+            .getModelRenderer()
+            .tesselateWithAO(
+                    blockEntity.getLevel(),
+                    model,
+                    state,
+                    blockEntity.getBlockPos(),
+                    stack,
+                    buffer,
+                    checkSides,
+                    RandomSource.create(),
+                    blockEntity.getBlockPos().asLong(),
+                    OverlayTexture.NO_OVERLAY,
+                    data,
+                    renderType
+            );
+  }
 
 }

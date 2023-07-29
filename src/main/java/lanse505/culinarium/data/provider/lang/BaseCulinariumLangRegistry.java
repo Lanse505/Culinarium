@@ -6,18 +6,18 @@ import net.minecraftforge.common.data.LanguageProvider;
 
 public abstract class BaseCulinariumLangRegistry extends LanguageProvider {
 
-    public BaseCulinariumLangRegistry(PackOutput output, String locale) {
-        super(output, Culinarium.MODID, locale);
-    }
+  public BaseCulinariumLangRegistry(PackOutput output, String locale) {
+    super(output, Culinarium.MODID, locale);
+  }
 
-    public abstract void addBlockTranslations();
+  public abstract void addBlockTranslations();
 
-    public abstract void addItemTranslations();
+  public abstract void addItemTranslations();
 
-    public abstract void addEntityTranslations();
+  public abstract void addEntityTranslations();
 
-    public abstract void addEffectTranslations();
+  public abstract void addEffectTranslations();
 
-    public abstract void addMiscTranslations();
+  public abstract void addMiscTranslations();
 
 }

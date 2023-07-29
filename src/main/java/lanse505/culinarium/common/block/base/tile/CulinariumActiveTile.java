@@ -13,28 +13,28 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class CulinariumActiveTile<T extends CulinariumActiveTile<T>> extends CulinariumBaseTile<T> implements ITickableBlockEntity<T>, EntityBlock {
 
-    public CulinariumActiveTile(CulinariumBaseTileBlock<T> base, BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(base, pType, pPos, pBlockState);
-    }
+  public CulinariumActiveTile(CulinariumBaseTileBlock<T> base, BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+    super(base, pType, pPos, pBlockState);
+  }
 
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return CulinariumBlockRegistry.MILLSTONE.getType().create(pPos, pState);
-    }
+  @Nullable
+  @Override
+  public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+    return CulinariumBlockRegistry.MILLSTONE.getType().create(pPos, pState);
+  }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    @Nullable
-    @Override
-    public <R extends BlockEntity> BlockEntityTicker<R> getTicker(Level pLevel, BlockState pState, BlockEntityType<R> type) {
-        return (level, pos, state, blockentity) -> {
-            if (blockentity instanceof ITickableBlockEntity tickable) {
-                if (level.isClientSide()) {
-                    tickable.clientTick(level, pos, state, blockentity);
-                } else {
-                    tickable.serverTick(level, pos, state, blockentity);
-                }
-            }
-        };
-    }
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  @Nullable
+  @Override
+  public <R extends BlockEntity> BlockEntityTicker<R> getTicker(Level pLevel, BlockState pState, BlockEntityType<R> type) {
+    return (level, pos, state, blockentity) -> {
+      if (blockentity instanceof ITickableBlockEntity tickable) {
+        if (level.isClientSide()) {
+          tickable.clientTick(level, pos, state, blockentity);
+        } else {
+          tickable.serverTick(level, pos, state, blockentity);
+        }
+      }
+    };
+  }
 }

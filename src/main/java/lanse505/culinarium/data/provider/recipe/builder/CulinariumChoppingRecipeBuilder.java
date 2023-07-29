@@ -14,73 +14,73 @@ import java.util.function.Consumer;
 
 public class CulinariumChoppingRecipeBuilder extends CulinariumBaseRecipeBuilder {
 
-    private Ingredient input;
-    private int chops;
-    private ItemStack output;
+  private Ingredient input;
+  private int chops;
+  private ItemStack output;
 
-    protected CulinariumChoppingRecipeBuilder(ResourceLocation id, ItemStack output) {
-        super(id);
-        this.output = output;
+  protected CulinariumChoppingRecipeBuilder(ResourceLocation id, ItemStack output) {
+    super(id);
+    this.output = output;
+  }
+
+  public static CulinariumChoppingRecipeBuilder chopping(ResourceLocation id, ItemStack output) {
+    return new CulinariumChoppingRecipeBuilder(id, output);
+  }
+
+  public CulinariumChoppingRecipeBuilder input(Ingredient input) {
+    this.input = input;
+    return this;
+  }
+
+  public CulinariumChoppingRecipeBuilder chops(int chops) {
+    this.chops = chops;
+    return this;
+  }
+
+  @Override
+  protected void ensureValid(ResourceLocation pRecipeId) {
+    if (input == null) {
+      throw new IllegalStateException("No input specified for recipe " + pRecipeId);
     }
-
-    public static CulinariumChoppingRecipeBuilder chopping(ResourceLocation id, ItemStack output) {
-        return new CulinariumChoppingRecipeBuilder(id, output);
+    if (output == null) {
+      throw new IllegalStateException("No output specified for recipe " + pRecipeId);
     }
+  }
 
-    public CulinariumChoppingRecipeBuilder input(Ingredient input) {
-        this.input = input;
-        return this;
-    }
+  @Override
+  public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
+    this.ensureValid(pRecipeId);
+    pFinishedRecipeConsumer.accept(new Result(pRecipeId, input, chops, output));
+  }
 
-    public CulinariumChoppingRecipeBuilder chops(int chops) {
-        this.chops = chops;
-        return this;
+  public static class Result extends CulinariumBaseRecipeBuilder.Result {
+
+    private final Ingredient input;
+    private final int chops;
+    private final ItemStack output;
+
+    public Result(ResourceLocation id, Ingredient input, int chops, ItemStack output) {
+      super(id);
+      this.input = input;
+      this.chops = chops;
+      this.output = output;
     }
 
     @Override
-    protected void ensureValid(ResourceLocation pRecipeId) {
-        if (input == null) {
-            throw new IllegalStateException("No input specified for recipe " + pRecipeId);
-        }
-        if (output == null) {
-            throw new IllegalStateException("No output specified for recipe " + pRecipeId);
-        }
+    public void serializeRecipeData(JsonObject pJson) {
+      pJson.addProperty("id", this.getId().toString());
+      pJson.add("input", this.input.toJson());
+      pJson.addProperty("chops", this.chops);
+      JsonObject json = new JsonObject();
+      json.addProperty("item", ForgeRegistries.ITEMS.getKey(output.getItem()).toString());
+      json.addProperty("count", output.getCount());
+      if (output.hasTag()) json.addProperty("nbt", output.getTag().toString());
+      pJson.add("output", json);
     }
 
     @Override
-    public void save(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ResourceLocation pRecipeId) {
-        this.ensureValid(pRecipeId);
-        pFinishedRecipeConsumer.accept(new Result(pRecipeId, input, chops, output));
+    public RecipeSerializer<?> getType() {
+      return CulinariumRecipeRegistry.CHOPPING.getSerializer();
     }
-
-    public static class Result extends CulinariumBaseRecipeBuilder.Result {
-
-        private final Ingredient input;
-        private final int chops;
-        private final ItemStack output;
-
-        public Result(ResourceLocation id, Ingredient input, int chops, ItemStack output) {
-            super(id);
-            this.input = input;
-            this.chops = chops;
-            this.output = output;
-        }
-
-        @Override
-        public void serializeRecipeData(JsonObject pJson) {
-            pJson.addProperty("id", this.getId().toString());
-            pJson.add("input", this.input.toJson());
-            pJson.addProperty("chops", this.chops);
-            JsonObject json = new JsonObject();
-            json.addProperty("item", ForgeRegistries.ITEMS.getKey(output.getItem()).toString());
-            json.addProperty("count", output.getCount());
-            if (output.hasTag()) json.addProperty("nbt", output.getTag().toString());
-            pJson.add("output", json);
-        }
-
-        @Override
-        public RecipeSerializer<?> getType() {
-            return CulinariumRecipeRegistry.CHOPPING.getSerializer();
-        }
-    }
+  }
 }

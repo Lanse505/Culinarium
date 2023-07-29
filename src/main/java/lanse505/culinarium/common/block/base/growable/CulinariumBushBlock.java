@@ -5,8 +5,8 @@ import net.minecraftforge.common.IPlantable;
 
 public class CulinariumBushBlock extends BushBlock implements IPlantable {
 
-    public CulinariumBushBlock(Properties pProperties) {
-        super(pProperties);
-    }
+  public CulinariumBushBlock(Properties pProperties) {
+    super(pProperties);
+  }
 
 }

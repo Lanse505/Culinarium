@@ -15,21 +15,21 @@ import xyz.brassgoggledcoders.shadyskies.containersyncing.object.ProgressView;
 
 public class CulinariumMenuTypeRegistry {
 
-    public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Culinarium.MODID);
+  public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, Culinarium.MODID);
 
-    public static final RegistryObject<MenuType<BrewingBarrelMenu>> BREWING_BARREL_MENU = MENU_TYPES.register("brewing_barrel",
-            () -> IForgeMenuType.create(
-                    (id, inv, data) -> new BrewingBarrelMenu(
-                            id, inv.player, data.readBlockPos(),
-                            new FluidTank(CulinariumBarrelTileBase.DEFAULT_TANK_CAPACITY),
-                            new ItemStackHandler(4),
-                            new FluidTank(CulinariumBarrelTileBase.DEFAULT_TANK_CAPACITY),
-                            () -> ProgressView.NULL
-                    )
-            )
-    );
+  public static final RegistryObject<MenuType<BrewingBarrelMenu>> BREWING_BARREL_MENU = MENU_TYPES.register("brewing_barrel",
+          () -> IForgeMenuType.create(
+                  (id, inv, data) -> new BrewingBarrelMenu(
+                          id, inv.player, data.readBlockPos(),
+                          new FluidTank(CulinariumBarrelTileBase.DEFAULT_TANK_CAPACITY),
+                          new ItemStackHandler(4),
+                          new FluidTank(CulinariumBarrelTileBase.DEFAULT_TANK_CAPACITY),
+                          () -> ProgressView.NULL
+                  )
+          )
+  );
 
-    public static void register(IEventBus bus) {
-        MENU_TYPES.register(bus);
-    }
+  public static void register(IEventBus bus) {
+    MENU_TYPES.register(bus);
+  }
 }

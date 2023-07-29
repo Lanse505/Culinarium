@@ -18,56 +18,56 @@ import java.util.function.Supplier;
 
 public class BrewingBarrelMenu extends BaseBarrelMenu implements IPropertyManaged {
 
-    private final Property<TankView> brewable;
-    private final Property<TankView> brewed;
-    private final Property<ProgressView> progress;
+  private final Property<TankView> brewable;
+  private final Property<TankView> brewed;
+  private final Property<ProgressView> progress;
 
-    public BrewingBarrelMenu(int menuId, Player player, BlockPos pos, FluidTank brewable, ItemStackHandler storage, FluidTank brewed, Supplier<ProgressView> progress) {
-        super(CulinariumMenuTypeRegistry.BREWING_BARREL_MENU.get(), menuId, player, pos);
-        this.SLOT_COUNT = 4;
-        this.SLOT_INPUT = 0;
-        this.SLOT_INPUT_END = 3;
-        layoutPlayerInventorySlots(player.getInventory(), 8, 121);
-        this.brewable = this.propertyManager.addTrackedProperty(PropertyTypes.TANK_VIEW.create(
-                () -> TankView.fromFluidTank(brewable),
-                (value) -> brewable.setFluid(value.fluidStack())
-        ));
-        this.brewed = this.propertyManager.addTrackedProperty(PropertyTypes.TANK_VIEW.create(
-                () -> TankView.fromFluidTank(brewed),
-                (value) -> brewed.setFluid(value.fluidStack())
-        ));
-        this.progress = this.propertyManager.addTrackedProperty(PropertyTypes.PROGRESS_VIEW.create(progress));
-        addSlot(new SlotItemHandler(storage, 0, 62, 37));
-        addSlot(new SlotItemHandler(storage, 1, 98, 37));
-        addSlot(new SlotItemHandler(storage, 2, 62, 55));
-        addSlot(new SlotItemHandler(storage, 3, 98, 55));
-    }
+  public BrewingBarrelMenu(int menuId, Player player, BlockPos pos, FluidTank brewable, ItemStackHandler storage, FluidTank brewed, Supplier<ProgressView> progress) {
+    super(CulinariumMenuTypeRegistry.BREWING_BARREL_MENU.get(), menuId, player, pos);
+    this.SLOT_COUNT = 4;
+    this.SLOT_INPUT = 0;
+    this.SLOT_INPUT_END = 3;
+    layoutPlayerInventorySlots(player.getInventory(), 8, 121);
+    this.brewable = this.propertyManager.addTrackedProperty(PropertyTypes.TANK_VIEW.create(
+            () -> TankView.fromFluidTank(brewable),
+            (value) -> brewable.setFluid(value.fluidStack())
+    ));
+    this.brewed = this.propertyManager.addTrackedProperty(PropertyTypes.TANK_VIEW.create(
+            () -> TankView.fromFluidTank(brewed),
+            (value) -> brewed.setFluid(value.fluidStack())
+    ));
+    this.progress = this.propertyManager.addTrackedProperty(PropertyTypes.PROGRESS_VIEW.create(progress));
+    addSlot(new SlotItemHandler(storage, 0, 62, 37));
+    addSlot(new SlotItemHandler(storage, 1, 98, 37));
+    addSlot(new SlotItemHandler(storage, 2, 62, 55));
+    addSlot(new SlotItemHandler(storage, 3, 98, 55));
+  }
 
-    public Property<TankView> getBrewable() {
-        return this.brewable;
-    }
+  public Property<TankView> getBrewable() {
+    return this.brewable;
+  }
 
-    public Property<TankView> getBrewed() {
-        return this.brewed;
-    }
+  public Property<TankView> getBrewed() {
+    return this.brewed;
+  }
 
-    public Property<ProgressView> getProgress() {
-        return progress;
-    }
+  public Property<ProgressView> getProgress() {
+    return progress;
+  }
 
-    @Override
-    public void broadcastChanges() {
-        super.broadcastChanges();
-        if (player instanceof ServerPlayer serverPlayer) {
-            this.propertyManager.sendChanges(serverPlayer, false);
-        }
+  @Override
+  public void broadcastChanges() {
+    super.broadcastChanges();
+    if (player instanceof ServerPlayer serverPlayer) {
+      this.propertyManager.sendChanges(serverPlayer, false);
     }
+  }
 
-    @Override
-    public void broadcastFullState() {
-        super.broadcastFullState();
-        if (player instanceof ServerPlayer serverPlayer) {
-            this.propertyManager.sendChanges(serverPlayer, true);
-        }
+  @Override
+  public void broadcastFullState() {
+    super.broadcastFullState();
+    if (player instanceof ServerPlayer serverPlayer) {
+      this.propertyManager.sendChanges(serverPlayer, true);
     }
+  }
 }

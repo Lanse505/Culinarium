@@ -24,31 +24,26 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class CulinariumNetworkHandler {
   private static final String PROTOCOL_VERSION = "1";
-
-  private int index = 0;
-
   public static final SimpleChannel INSTANCE =
-      NetworkRegistry.newSimpleChannel(
-          new ResourceLocation(Culinarium.MODID, "main"),
-          () -> PROTOCOL_VERSION,
-          PROTOCOL_VERSION::equals,
-          PROTOCOL_VERSION::equals
-      );
+          NetworkRegistry.newSimpleChannel(
+                  new ResourceLocation(Culinarium.MODID, "main"),
+                  () -> PROTOCOL_VERSION,
+                  PROTOCOL_VERSION::equals,
+                  PROTOCOL_VERSION::equals
+          );
+  private int index = 0;
 
   public static Player getPlayer(NetworkEvent.Context context) {
     return Culinarium.proxy.getPlayer(context);
   }
 
   public void init() {
-    //registerClientToServer(ServerboundUpdateSealPacket.class, ServerboundUpdateSealPacket::decode);
-    registerMessage(ServerboundUpdateSealPacket.class, ServerboundUpdateSealPacket::decode, NetworkDirection.PLAY_TO_SERVER);
-  }z
+    registerClientToServer(ServerboundUpdateSealPacket.class, ServerboundUpdateSealPacket::decode);
+  }
 
 
   protected <MSG extends INetworkPacket<MSG>> void registerClientToServer(Class<MSG> type, Function<FriendlyByteBuf, MSG> decoder) {
@@ -60,7 +55,12 @@ public class CulinariumNetworkHandler {
   }
 
   private <MSG extends INetworkPacket<MSG>> void registerMessage(Class<MSG> type, Function<FriendlyByteBuf, MSG> decoder, NetworkDirection networkDirection) {
-    INSTANCE.registerMessage(index++, type, INetworkPacket::encode, decoder, INetworkPacket::handle, Optional.of(networkDirection));
+    INSTANCE.registerMessage(index++, type,
+            (msg, friendlyByteBuf) -> INetworkPacket.encode(msg, () -> friendlyByteBuf),
+            decoder,
+            INetworkPacket::handle,
+            Optional.of(networkDirection)
+    );
   }
 
   /**
@@ -89,7 +89,6 @@ public class CulinariumNetworkHandler {
    * Send this message to everyone connected to the server if the server has loaded.
    *
    * @param message - message to send
-   *
    * @apiNote This is useful for reload listeners
    */
   public <MSG> void sendToAllIfLoaded(MSG message) {

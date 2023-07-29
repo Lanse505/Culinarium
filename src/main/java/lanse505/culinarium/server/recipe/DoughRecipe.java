@@ -15,79 +15,79 @@ import net.minecraft.world.level.Level;
 
 public class DoughRecipe extends CustomRecipe {
 
-    public DoughRecipe(ResourceLocation pId, CraftingBookCategory pCategory) {
-        super(pId, pCategory);
-    }
+  public DoughRecipe(ResourceLocation pId, CraftingBookCategory pCategory) {
+    super(pId, pCategory);
+  }
 
-    @Override
-    public boolean matches(CraftingContainer pContainer, Level pLevel) {
-        int i = 0;
-        ItemStack itemstack = ItemStack.EMPTY;
+  @Override
+  public boolean matches(CraftingContainer pContainer, Level pLevel) {
+    int i = 0;
+    ItemStack itemstack = ItemStack.EMPTY;
 
-        for (int j = 0; j < pContainer.getContainerSize(); ++j) {
-            ItemStack itemstack1 = pContainer.getItem(j);
-            if (!itemstack1.isEmpty()) {
-                if (itemstack1.is(CulinariumItemRegistry.BOWL_OF_WATER.get())) {
-                    if (!itemstack.isEmpty()) {
-                        return false;
-                    }
-                    itemstack = itemstack1;
-                } else if (!itemstack1.is(CulinariumItemRegistry.FLOUR.get())) {
-                    return false;
-                }
-                ++i;
-            }
+    for (int j = 0; j < pContainer.getContainerSize(); ++j) {
+      ItemStack itemstack1 = pContainer.getItem(j);
+      if (!itemstack1.isEmpty()) {
+        if (itemstack1.is(CulinariumItemRegistry.BOWL_OF_WATER.get())) {
+          if (!itemstack.isEmpty()) {
+            return false;
+          }
+          itemstack = itemstack1;
+        } else if (!itemstack1.is(CulinariumItemRegistry.FLOUR.get())) {
+          return false;
         }
-        return !itemstack.isEmpty() && itemstack.hasTag() && i > 0;
+        ++i;
+      }
     }
+    return !itemstack.isEmpty() && itemstack.hasTag() && i > 0;
+  }
 
-    @Override
-    public ItemStack assemble(CraftingContainer pContainer, RegistryAccess pRegistryAccess) {
-        int i = 0;
-        ItemStack water = ItemStack.EMPTY;
+  @Override
+  public ItemStack assemble(CraftingContainer pContainer, RegistryAccess pRegistryAccess) {
+    int i = 0;
+    ItemStack water = ItemStack.EMPTY;
 
-        for (int j = 0; j < pContainer.getContainerSize(); ++j) {
-            ItemStack stack = pContainer.getItem(j);
-            if (!stack.isEmpty()) {
-                if (stack.is(CulinariumItemRegistry.BOWL_OF_WATER.get())) {
-                    if (!water.isEmpty()) {
-                        return ItemStack.EMPTY;
-                    }
-                    water = stack;
-                } else if (!stack.is(CulinariumItemRegistry.FLOUR.get())) {
-                    return ItemStack.EMPTY;
-                }
-                ++i;
-            }
-        }
-
-        if (!water.isEmpty() && i >= 1) {
-            return new ItemStack(CulinariumItemRegistry.DOUGH.get(), i);
-        } else {
+    for (int j = 0; j < pContainer.getContainerSize(); ++j) {
+      ItemStack stack = pContainer.getItem(j);
+      if (!stack.isEmpty()) {
+        if (stack.is(CulinariumItemRegistry.BOWL_OF_WATER.get())) {
+          if (!water.isEmpty()) {
             return ItemStack.EMPTY;
+          }
+          water = stack;
+        } else if (!stack.is(CulinariumItemRegistry.FLOUR.get())) {
+          return ItemStack.EMPTY;
         }
+        ++i;
+      }
     }
 
-    @Override
-    public NonNullList<ItemStack> getRemainingItems(CraftingContainer pContainer) {
-        NonNullList<ItemStack> nonnulllist = NonNullList.withSize(pContainer.getContainerSize(), ItemStack.EMPTY);
-        for (int i = 0; i < nonnulllist.size(); ++i) {
-            ItemStack itemstack = pContainer.getItem(i);
-            if (itemstack.is(CulinariumItemRegistry.BOWL_OF_WATER.get())) {
-                nonnulllist.set(i, new ItemStack(Items.BOWL, 1));
-                break;
-            }
-        }
-        return nonnulllist;
+    if (!water.isEmpty() && i >= 1) {
+      return new ItemStack(CulinariumItemRegistry.DOUGH.get(), i);
+    } else {
+      return ItemStack.EMPTY;
     }
+  }
 
-    @Override
-    public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return pWidth >= 2 && pHeight >= 2;
+  @Override
+  public NonNullList<ItemStack> getRemainingItems(CraftingContainer pContainer) {
+    NonNullList<ItemStack> nonnulllist = NonNullList.withSize(pContainer.getContainerSize(), ItemStack.EMPTY);
+    for (int i = 0; i < nonnulllist.size(); ++i) {
+      ItemStack itemstack = pContainer.getItem(i);
+      if (itemstack.is(CulinariumItemRegistry.BOWL_OF_WATER.get())) {
+        nonnulllist.set(i, new ItemStack(Items.BOWL, 1));
+        break;
+      }
     }
+    return nonnulllist;
+  }
 
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return CulinariumRecipeRegistry.DOUGH_MAKING.getSerializer();
-    }
+  @Override
+  public boolean canCraftInDimensions(int pWidth, int pHeight) {
+    return pWidth >= 2 && pHeight >= 2;
+  }
+
+  @Override
+  public RecipeSerializer<?> getSerializer() {
+    return CulinariumRecipeRegistry.DOUGH_MAKING.getSerializer();
+  }
 }
